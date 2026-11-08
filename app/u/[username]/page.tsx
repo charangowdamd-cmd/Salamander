@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useUserStore } from "@/lib/store";
 import { PROBLEMS } from "@/lib/data/problems";
+import { AnalyticsCard } from "@/components/AnalyticsCard";
 import { 
   ShieldCheck, 
   Award, 
@@ -13,7 +14,8 @@ import {
   Check, 
   Linkedin, 
   Code,
-  Medal
+  Medal,
+  ExternalLink
 } from "lucide-react";
 
 export default function PublicProfilePage() {
@@ -29,6 +31,29 @@ export default function PublicProfilePage() {
     day: "numeric",
     year: "numeric",
   });
+
+  const easyTotal = PROBLEMS.filter((p) => p.difficulty === "Easy").length;
+  const medTotal = PROBLEMS.filter((p) => p.difficulty === "Medium").length;
+  const hardTotal = PROBLEMS.filter((p) => p.difficulty === "Hard").length;
+
+  const easySolved = state.solvedProblems.filter((s) => {
+    const p = PROBLEMS.find((x) => x.slug === s);
+    return p?.difficulty === "Easy";
+  }).length;
+
+  const medSolved = state.solvedProblems.filter((s) => {
+    const p = PROBLEMS.find((x) => x.slug === s);
+    return p?.difficulty === "Medium";
+  }).length;
+
+  const hardSolved = state.solvedProblems.filter((s) => {
+    const p = PROBLEMS.find((x) => x.slug === s);
+    return p?.difficulty === "Hard";
+  }).length;
+
+  const acceptanceRate = state.submissions.length > 0
+    ? (state.submissions.filter((s) => s.verdict === "Accepted").length / state.submissions.length) * 100
+    : 100;
 
   const handleCopyLink = () => {
     if (typeof window !== "undefined") {
@@ -55,7 +80,7 @@ export default function PublicProfilePage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div className="flex items-center space-x-5">
             <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-2xl font-bold text-emerald-400">
-              {username[0].toUpperCase()}
+              {username[0]?.toUpperCase() || "U"}
             </div>
             <div className="space-y-1">
               <div className="flex items-center space-x-2">
@@ -66,7 +91,7 @@ export default function PublicProfilePage() {
                 </div>
               </div>
               <p className="text-xs text-slate-400">
-                Final Year CS • RVCE Bangalore • Placement Season 2026
+                Placement Candidate • Salamanders Coding Arena • Season 2026
               </p>
             </div>
           </div>
@@ -109,69 +134,36 @@ export default function PublicProfilePage() {
         </div>
       </div>
 
-      {/* Stats Summary */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Problems solved</span>
-          <div className="text-2xl font-black text-white">{state.solvedProblems.length + 80}</div>
-          <span className="text-[11px] text-emerald-400 mt-0.5 block">Verified test runs</span>
-        </div>
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Global standing</span>
-          <div className="text-2xl font-black text-cyan-400">#4</div>
-          <span className="text-[11px] text-slate-500 mt-0.5 block">College leaderboard</span>
-        </div>
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Points</span>
-          <div className="text-2xl font-black text-emerald-400">{state.points || 2150}</div>
-          <span className="text-[11px] text-slate-500 mt-0.5 block">Proof of effort</span>
-        </div>
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Active streak</span>
-          <div className="text-2xl font-black text-amber-400 flex items-center gap-1.5">
-            <Flame className="w-5 h-5 text-amber-400" />
-            <span>{state.streak} days</span>
-          </div>
-          <span className="text-[11px] text-slate-500 mt-0.5 block">Continuous practice</span>
-        </div>
-      </div>
+      {/* Verified Analytics Section (Problems Solved, Badges & Calendar Heatmap matching Reference Image 2) */}
+      <AnalyticsCard
+        solvedCount={state.solvedProblems.length}
+        totalCatalogCount={PROBLEMS.length}
+        easySolved={easySolved}
+        easyTotal={easyTotal}
+        medSolved={medSolved}
+        medTotal={medTotal}
+        hardSolved={hardSolved}
+        hardTotal={hardTotal}
+        acceptanceRate={acceptanceRate}
+        badgesEarned={state.badges.length}
+        upcomingBadgeName="Dynamic Programming Sorcerer"
+        upcomingBadgeProgress="3 / 5 solved"
+        submissions={state.submissions}
+      />
 
-      {/* Badges Earned */}
+      {/* Verified Solved Problem Archive */}
       <section className="space-y-4">
-        <h3 className="text-sm font-bold text-white flex items-center gap-2">
-          <Award className="w-4 h-4 text-amber-400" />
-          <span>Verified badges</span>
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {state.badges.length === 0 ? (
-            <div className="col-span-3 p-6 text-center text-xs text-slate-500 border border-slate-800 rounded-2xl bg-[#0c121e]">
-              Solve problems in the Arena to unlock verified badges.
-            </div>
-          ) : (
-            state.badges.map((b) => (
-              <div
-                key={b.id}
-                className="p-4 rounded-2xl bg-[#0c121e] border border-emerald-500/20 flex items-center space-x-3.5"
-              >
-                <div className="w-9 h-9 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-emerald-400">
-                  <Medal className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-xs text-white">{b.name}</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">{b.description}</p>
-                </div>
-              </div>
-            ))
-          )}
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-white">Verified solved problem archive</h3>
+          <span className="text-xs text-slate-500 font-mono">
+            {state.solvedProblems.length} solved
+          </span>
         </div>
-      </section>
-
-      {/* Solved Problems Evidence List */}
-      <section className="space-y-4">
-        <h3 className="text-sm font-bold text-white">Verified solved problem archive</h3>
         <div className="bg-[#0c121e] border border-slate-800 rounded-2xl p-4 divide-y divide-slate-800/80 text-xs">
           {state.solvedProblems.length === 0 ? (
-            <p className="py-4 text-center text-slate-500">No problems solved yet.</p>
+            <p className="py-6 text-center text-slate-500">
+              No problems verified in the current session. Practice in the Arena to publish proof of skill!
+            </p>
           ) : (
             state.solvedProblems.map((slug) => {
               const p = PROBLEMS.find((x) => x.slug === slug);
@@ -179,10 +171,20 @@ export default function PublicProfilePage() {
                 <div key={slug} className="py-3 flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span className="font-medium text-slate-200">{p?.title || slug}</span>
+                    <Link
+                      href={`/problems/${slug}`}
+                      className="font-medium text-slate-200 hover:text-emerald-400 transition"
+                    >
+                      {p?.title || slug}
+                    </Link>
                     <span className="text-[10px] text-slate-500">({p?.difficulty})</span>
                   </div>
-                  <span className="text-[11px] text-emerald-400 font-mono">Accepted</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] text-emerald-400 font-mono">Accepted</span>
+                    <Link href={`/problems/${slug}`} className="text-slate-500 hover:text-slate-300">
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
                 </div>
               );
             })
@@ -202,7 +204,7 @@ export default function PublicProfilePage() {
             <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl font-mono text-xs text-slate-300 whitespace-pre-wrap leading-relaxed">
               {`Salamanders Verified Developer Profile
 Candidate: ${username}
-Verified Solved: ${state.solvedProblems.length + 80} Problems
+Verified Solved: ${state.solvedProblems.length} Problems
 Daily Streak: ${state.streak} Days
 URL: https://salamanders.dev/u/${username}`}
             </div>

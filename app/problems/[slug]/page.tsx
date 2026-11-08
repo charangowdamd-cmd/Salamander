@@ -43,7 +43,8 @@ export default function ProblemArenaPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Console & Custom Input State
-  const [consoleTab, setConsoleTab] = useState<"output" | "custom">("output");
+  const [consoleTab, setConsoleTab] = useState<"output" | "testcase">("testcase");
+  const [selectedCaseIdx, setSelectedCaseIdx] = useState<number>(0);
   const [customInput, setCustomInput] = useState<string>(problem.examples[0]?.input || "");
   const [verdict, setVerdict] = useState<Verdict | null>(null);
   const [runtime, setRuntime] = useState<number | null>(null);
@@ -98,7 +99,7 @@ export default function ProblemArenaPage() {
           problemSlug: problem.slug,
           code,
           language,
-          customInput: consoleTab === "custom" && customInput.trim() ? customInput : undefined,
+          customInput: selectedCaseIdx === 999 && customInput.trim() ? customInput : undefined,
         }),
       });
       const data = await res.json();
@@ -530,24 +531,24 @@ export default function ProblemArenaPage() {
           </div>
 
           {/* Bottom Execution Console */}
-          <div className="h-48 border-t border-slate-800 bg-slate-950 p-3 flex flex-col justify-between overflow-hidden">
+          <div className="h-56 border-t border-slate-800 bg-slate-950 p-3 flex flex-col justify-between overflow-hidden">
             <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
               <div className="flex items-center space-x-3 text-xs">
+                <button
+                  onClick={() => setConsoleTab("testcase")}
+                  className={`font-bold transition ${
+                    consoleTab === "testcase" ? "text-emerald-400" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  Testcase
+                </button>
                 <button
                   onClick={() => setConsoleTab("output")}
                   className={`font-bold transition ${
                     consoleTab === "output" ? "text-emerald-400" : "text-slate-400 hover:text-white"
                   }`}
                 >
-                  Console Output
-                </button>
-                <button
-                  onClick={() => setConsoleTab("custom")}
-                  className={`font-bold transition ${
-                    consoleTab === "custom" ? "text-emerald-400" : "text-slate-400 hover:text-white"
-                  }`}
-                >
-                  Custom Testcase
+                  Test Result
                 </button>
 
                 {verdict && (
@@ -577,32 +578,101 @@ export default function ProblemArenaPage() {
               )}
             </div>
 
-            {/* Console Tab: Output or Custom Input */}
-            {consoleTab === "output" ? (
-              <div className="flex-1 overflow-y-auto font-mono text-xs text-slate-300 py-2 whitespace-pre-wrap">
-                {consoleOutput || "Ready to run. Click 'Run' to test samples or 'Submit' for full judgment."}
+            {/* Console Tab: Testcase vs Test Result */}
+            {consoleTab === "testcase" ? (
+              <div className="flex-1 flex flex-col pt-2 overflow-hidden space-y-2">
+                {/* Case Pills */}
+                <div className="flex items-center gap-1.5">
+                  {problem.examples.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedCaseIdx(idx)}
+                      className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                        selectedCaseIdx === idx
+                          ? "bg-slate-800 text-white border border-slate-700"
+                          : "bg-slate-900/80 text-slate-400 hover:text-slate-200"
+                      }`}
+                    >
+                      Case {idx + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setSelectedCaseIdx(999)}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                      selectedCaseIdx === 999
+                        ? "bg-slate-800 text-white border border-slate-700"
+                        : "bg-slate-900/80 text-slate-400 hover:text-slate-200"
+                    }`}
+                  >
+                    Custom
+                  </button>
+                </div>
+
+                {/* Case Content */}
+                <div className="flex-1 overflow-y-auto">
+                  {selectedCaseIdx === 999 ? (
+                    <textarea
+                      value={customInput}
+                      onChange={(e) => setCustomInput(e.target.value)}
+                      placeholder="Enter custom input lines..."
+                      className="w-full h-full bg-slate-900 border border-slate-800 rounded-lg p-2 font-mono text-xs text-slate-200 resize-none focus:outline-none focus:border-emerald-500"
+                    />
+                  ) : (
+                    <div className="bg-slate-900/90 border border-slate-800/80 rounded-lg p-2.5 space-y-1 text-xs font-mono">
+                      <div className="text-slate-400">
+                        <span className="text-slate-500 select-none">input: </span>
+                        <span className="text-slate-200">{problem.examples[selectedCaseIdx]?.input}</span>
+                      </div>
+                      <div className="text-slate-400">
+                        <span className="text-slate-500 select-none">expected: </span>
+                        <span className="text-emerald-400">{problem.examples[selectedCaseIdx]?.output}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
-              <div className="flex-1 py-1">
-                <textarea
-                  value={customInput}
-                  onChange={(e) => setCustomInput(e.target.value)}
-                  placeholder="Enter custom input lines..."
-                  className="w-full h-full bg-slate-900 border border-slate-800 rounded-lg p-2 font-mono text-xs text-slate-200 resize-none focus:outline-none focus:border-emerald-500"
-                />
-              </div>
-            )}
+              <div className="flex-1 flex flex-col overflow-y-auto pt-2 space-y-2">
+                {failedCase ? (
+                  <div className="space-y-1.5 text-xs font-mono bg-slate-900 border border-rose-500/20 rounded-lg p-3">
+                    <div className="text-rose-400 font-bold">Failed on Testcase #{failedCase.index || 1}</div>
+                    {failedCase.input && (
+                      <div className="text-slate-400">
+                        <span className="text-slate-500">Input: </span>
+                        <span className="text-slate-200">{failedCase.input}</span>
+                      </div>
+                    )}
+                    {failedCase.actual && (
+                      <div className="text-slate-400">
+                        <span className="text-slate-500">Your Output: </span>
+                        <span className="text-rose-400">{failedCase.actual}</span>
+                      </div>
+                    )}
+                    {failedCase.expected && (
+                      <div className="text-slate-400">
+                        <span className="text-slate-500">Expected Output: </span>
+                        <span className="text-emerald-400">{failedCase.expected}</span>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="font-mono text-xs text-slate-300 py-1 whitespace-pre-wrap">
+                    {consoleOutput || "Ready to run. Click 'Run' to test samples or 'Submit' for full judgment."}
+                  </div>
+                )}
 
-            {/* If failed, show Debug with AI quick action */}
-            {verdict && verdict !== "Accepted" && (
-              <div className="pt-2 flex justify-end">
-                <button
-                  onClick={() => handleAiAction("debug")}
-                  className="flex items-center space-x-1.5 text-xs text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1 rounded-md border border-amber-500/30 font-medium transition"
-                >
-                  <Bot className="w-3.5 h-3.5" />
-                  <span>Debug with AI</span>
-                </button>
+                {/* If failed, show Debug with AI quick action */}
+                {verdict && verdict !== "Accepted" && (
+                  <div className="pt-1 flex justify-end">
+                    <button
+                      onClick={() => handleAiAction("debug")}
+                      className="flex items-center space-x-1.5 text-xs text-amber-400 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1 rounded-md border border-amber-500/30 font-medium transition"
+                    >
+                      <Bot className="w-3.5 h-3.5" />
+                      <span>Debug with AI Mentor</span>
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>

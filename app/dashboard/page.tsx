@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { PROBLEMS } from "@/lib/data/problems";
 import { useUserStore } from "@/lib/store";
+import { AnalyticsCard } from "@/components/AnalyticsCard";
 import { 
   Flame, 
   Target, 
@@ -11,7 +12,8 @@ import {
   AlertTriangle,
   ArrowRight,
   TrendingUp,
-  Award
+  Award,
+  BookOpen
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -36,29 +38,33 @@ export default function DashboardPage() {
     return p?.difficulty === "Hard";
   }).length;
 
-  const weeks = 26;
-  const days = 7;
+  const acceptanceRate = state.submissions.length > 0
+    ? (state.submissions.filter((s) => s.verdict === "Accepted").length / state.submissions.length) * 100
+    : 60.9;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Developer dashboard</h1>
-        <p className="text-xs sm:text-sm text-slate-400 mt-1">
-          Detailed metrics on problem consistency, topic mastery, and weak-area targeting
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Developer dashboard</h1>
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            Detailed metrics on problem consistency, topic mastery, and weak-area targeting
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/interview-prep/mock"
+            className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition"
+          >
+            <span>Take 45-min mock</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </div>
 
-      {/* Top Stat Cards */}
+      {/* Top Stat Summary Pills */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Total solved</span>
-          <div className="text-2xl font-black text-white">{state.solvedProblems.length}</div>
-          <span className="text-[11px] text-emerald-400 mt-1 block">
-            {Math.round((state.solvedProblems.length / PROBLEMS.length) * 100)}% of catalog
-          </span>
-        </div>
-
         <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
           <span className="text-xs text-slate-400 block mb-1">Total points</span>
           <div className="text-2xl font-black text-emerald-400">{state.points}</div>
@@ -77,134 +83,76 @@ export default function DashboardPage() {
         </div>
 
         <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Global standing</span>
-          <div className="text-2xl font-black text-cyan-400">#4</div>
-          <span className="text-[11px] text-slate-500 mt-1 block">Top 1% in college</span>
+          <span className="text-xs text-slate-400 block mb-1">Weekly target</span>
+          <div className="text-2xl font-black text-white">
+            {state.solvedProblems.length} <span className="text-xs text-slate-500 font-normal">/ 5 problems</span>
+          </div>
+          <span className="text-[11px] text-emerald-400 mt-1 block">
+            {Math.round((state.solvedProblems.length / 5) * 100)}% completed
+          </span>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
+          <span className="text-xs text-slate-400 block mb-1">Interview readiness</span>
+          <div className="text-2xl font-black text-cyan-400">84%</div>
+          <span className="text-[11px] text-slate-500 mt-1 block">Calculated from DSA tracks</span>
         </div>
       </div>
 
-      {/* Main Grid: Difficulty Breakdown & Focus Areas */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Difficulty Breakdown */}
-        <div className="p-6 rounded-2xl bg-[#0c121e] border border-slate-800 space-y-5">
-          <h3 className="text-sm font-bold text-white">Difficulty breakdown</h3>
+      {/* Primary Analytics Section matching Reference Image 2 */}
+      <AnalyticsCard
+        solvedCount={state.solvedProblems.length}
+        totalCatalogCount={PROBLEMS.length}
+        easySolved={easySolved}
+        easyTotal={easyTotal}
+        medSolved={medSolved}
+        medTotal={medTotal}
+        hardSolved={hardSolved}
+        hardTotal={hardTotal}
+        acceptanceRate={acceptanceRate}
+        badgesEarned={state.badges.length}
+        upcomingBadgeName="Dynamic Programming Sorcerer"
+        upcomingBadgeProgress="3 / 5 solved"
+        submissions={state.submissions}
+      />
 
-          <div className="space-y-4">
-            {/* Easy */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-xs">
-                <span className="font-medium text-emerald-400">Easy</span>
-                <span className="text-slate-300 font-mono">
-                  {easySolved} / {easyTotal}
-                </span>
-              </div>
-              <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                <div
-                  className="bg-emerald-500 h-full"
-                  style={{ width: `${(easySolved / (easyTotal || 1)) * 100}%` }}
-                />
-              </div>
-            </div>
-
-            {/* Medium */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-xs">
-                <span className="font-medium text-amber-400">Medium</span>
-                <span className="text-slate-300 font-mono">
-                  {medSolved} / {medTotal}
-                </span>
-              </div>
-              <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                <div
-                  className="bg-amber-500 h-full"
-                  style={{ width: `${(medSolved / (medTotal || 1)) * 100}%` }}
-                />
-              </div>
-            </div>
-
-            {/* Hard */}
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-xs">
-                <span className="font-medium text-rose-400">Hard</span>
-                <span className="text-slate-300 font-mono">
-                  {hardSolved} / {hardTotal}
-                </span>
-              </div>
-              <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                <div
-                  className="bg-rose-500 h-full"
-                  style={{ width: `${(hardSolved / (hardTotal || 1)) * 100}%` }}
-                />
-              </div>
-            </div>
-          </div>
+      {/* Focus Areas and Diagnostics */}
+      <div className="p-6 rounded-2xl bg-[#0c121e] border border-slate-800 space-y-4">
+        <div className="flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-amber-400" />
+          <h3 className="text-sm font-bold text-white">Focus areas and diagnostics</h3>
         </div>
+        <p className="text-xs text-slate-400">
+          Derived from test failure patterns, hint dependence, and solution runtimes
+        </p>
 
-        {/* AI Focus Areas */}
-        <div className="lg:col-span-2 p-6 rounded-2xl bg-[#0c121e] border border-slate-800 space-y-4">
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-400" />
-            <h3 className="text-sm font-bold text-white">Focus areas and diagnostics</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+            <span className="text-xs font-semibold text-rose-400 block">Dynamic programming</span>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Tabulation transitions take longer than benchmark averages. Practice unbounded coin change variations.
+            </p>
+            <Link
+              href="/problems/coin-change"
+              className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold inline-flex items-center gap-1"
+            >
+              <span>Practice Coin Change</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
           </div>
-          <p className="text-xs text-slate-400">
-            Derived from test failure patterns, hint dependence, and solution runtimes
-          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-              <span className="text-xs font-semibold text-rose-400 block">Dynamic programming</span>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Tabulation transitions take longer than benchmark averages. Practice unbounded coin change variations.
-              </p>
-              <Link
-                href="/problems/coin-change"
-                className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold inline-flex items-center gap-1"
-              >
-                <span>Practice Coin Change</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-
-            <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-              <span className="text-xs font-semibold text-amber-400 block">Two pointers (multi-boundary)</span>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Boundary checks and in-place state tracking can be improved for multi-boundary elevation problems.
-              </p>
-              <Link
-                href="/problems/trapping-rain-water"
-                className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold inline-flex items-center gap-1"
-              >
-                <span>Practice Trapping Rain Water</span>
-                <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Activity Heatmap */}
-      <div className="p-6 rounded-2xl bg-[#0c121e] border border-slate-800 space-y-3">
-        <h3 className="text-sm font-bold text-white">Annual practice activity</h3>
-        <div className="overflow-x-auto pb-2">
-          <div className="flex gap-1.5 min-w-[700px]">
-            {Array.from({ length: weeks }).map((_, w) => (
-              <div key={w} className="flex flex-col gap-1.5">
-                {Array.from({ length: days }).map((_, d) => {
-                  const isActive = (w * 7 + d) % 4 === 0 || (w === weeks - 1 && d >= 4);
-                  return (
-                    <div
-                      key={d}
-                      className={`w-3.5 h-3.5 rounded-sm ${
-                        isActive
-                          ? "bg-emerald-500"
-                          : "bg-slate-900 border border-slate-800"
-                      }`}
-                      title={`Week ${w + 1}, Day ${d + 1}`}
-                    />
-                  );
-                })}
-              </div>
-            ))}
+          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+            <span className="text-xs font-semibold text-amber-400 block">Two pointers (multi-boundary)</span>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Boundary checks and in-place state tracking can be improved for multi-boundary elevation problems.
+            </p>
+            <Link
+              href="/problems/trapping-rain-water"
+              className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold inline-flex items-center gap-1"
+            >
+              <span>Practice Trapping Rain Water</span>
+              <ArrowRight className="w-3 h-3" />
+            </Link>
           </div>
         </div>
       </div>

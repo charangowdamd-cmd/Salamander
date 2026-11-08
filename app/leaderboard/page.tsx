@@ -14,7 +14,7 @@ export default function LeaderboardPage() {
     { rank: 1, username: "priya_dev", college: "IIT Bombay", points: 3420, streak: 42, solved: 184 },
     { rank: 2, username: "rohan_algo", college: "NIT Surathkal", points: 3150, streak: 35, solved: 162 },
     { rank: 3, username: "dev_siddharth", college: "BITS Pilani", points: 2890, streak: 28, solved: 145 },
-    { rank: 4, username: "alex_coder", college: "RVCE Bangalore", points: state.points || 2150, streak: state.streak, solved: state.solvedProblems.length + 80, isCurrentUser: true },
+    { rank: 4, username: "alex_coder", college: "RVCE Bangalore", points: state.points || 450, streak: state.streak, solved: state.solvedProblems.length, isCurrentUser: true },
     { rank: 5, username: "neha_codes", college: "PES University", points: 1980, streak: 14, solved: 95 },
     { rank: 6, username: "rahul_k", college: "IIT Delhi", points: 1840, streak: 19, solved: 88 },
   ];
