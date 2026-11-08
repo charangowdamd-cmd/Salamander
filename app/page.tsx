@@ -8,25 +8,17 @@ import { NEWS_ITEMS } from "@/lib/data/news";
 import { COMPANY_TRACKS } from "@/lib/data/interview";
 import { useUserStore } from "@/lib/store";
 import { useAuth } from "@/components/AuthProvider";
-import { 
-  Flame, 
-  ArrowRight, 
-  Sparkles, 
-  CheckCircle2, 
-  Target, 
-  Briefcase, 
-  ExternalLink,
-  ShieldCheck,
+import {
+  ArrowRight,
+  Sparkles,
   Code2,
-  Terminal,
   Cpu,
-  Layers,
   Building2,
-  Lock,
-  ChevronRight
+  ChevronRight,
+  ExternalLink,
+  CheckCircle2,
 } from "lucide-react";
 
-// Dynamically import Silk to ensure clean client-side WebGL mounting
 const Silk = dynamic(() => import("@/components/Silk"), { ssr: false });
 
 export default function Home() {
@@ -34,20 +26,22 @@ export default function Home() {
   const { user, openAuthModal } = useAuth();
   const [homeFilter, setHomeFilter] = useState<"All" | "Easy" | "Medium" | "Hard">("All");
 
-  const dailyProblem = PROBLEMS[0]; // Two Sum
+  const dailyProblem = PROBLEMS[0];
   const easyCount = PROBLEMS.filter((p) => p.difficulty === "Easy").length;
   const medCount = PROBLEMS.filter((p) => p.difficulty === "Medium").length;
   const hardCount = PROBLEMS.filter((p) => p.difficulty === "Hard").length;
 
-  const showcasedProblems = homeFilter === "All" 
-    ? PROBLEMS.slice(0, 6) 
-    : PROBLEMS.filter((p) => p.difficulty === homeFilter).slice(0, 6);
+  const showcasedProblems =
+    homeFilter === "All"
+      ? PROBLEMS.slice(0, 6)
+      : PROBLEMS.filter((p) => p.difficulty === homeFilter).slice(0, 6);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-      {/* Hero Section with Silk Interactive WebGL Background */}
-      <section className="rounded-3xl border border-slate-800 bg-[#07090e] overflow-hidden relative shadow-2xl">
-        <div style={{ width: '100%', height: '620px', position: 'relative' }}>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+      {/* ── Hero ── */}
+      <section className="rounded-2xl overflow-hidden relative" style={{ height: "580px" }}>
+        <div style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}>
           <Silk
             color="#ff2727"
             sheenColor="#ffffff"
@@ -65,256 +59,271 @@ export default function Home() {
             wave={0.75}
             interactionStrength={0.45}
           />
+        </div>
 
-          {/* Overlay containing hero copy and interactive actions */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-center p-8 sm:p-14 bg-gradient-to-r from-[#07090e]/95 via-[#07090e]/80 to-transparent pointer-events-none">
-            <div className="max-w-2xl space-y-6 pointer-events-auto">
-              {/* Badge */}
-              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold backdrop-blur-md shadow-sm">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Salamanders 2.0 • 20 Core DSA Patterns • Supabase Cloud Sync</span>
-              </div>
-
-              {/* Headline */}
-              <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-                Master placement coding with verified execution.
+        <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-12"
+          style={{ background: "linear-gradient(to top, rgba(8,12,20,0.97) 0%, rgba(8,12,20,0.75) 50%, transparent 100%)" }}>
+          <div className="max-w-xl space-y-5">
+            <div>
+              <span className="inline-block text-xs font-semibold tracking-wide text-emerald-400 uppercase mb-3">
+                Salamanders — coding practice
+              </span>
+              <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight">
+                Crack interviews with verified execution.
               </h1>
+            </div>
 
-              {/* Description */}
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-                Subprocess-isolated test runner for JavaScript and Python 3, Socratic AI mentorship powered by Google Gemini 2.5 Flash, company interview ladders, and verifiable proof-of-skill developer profiles.
-              </p>
+            <p className="text-sm text-slate-300 leading-relaxed max-w-md">
+              Real subprocess judge for JavaScript and Python. Socratic AI mentorship. Company interview ladders. Proof-of-skill developer profiles.
+            </p>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3.5 pt-2">
-                <Link
-                  href={`/problems/${dailyProblem.slug}`}
-                  className="inline-flex items-center space-x-2 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition shadow-md"
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Link
+                href={`/problems/${dailyProblem.slug}`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm text-slate-950 transition"
+                style={{ backgroundColor: "var(--accent)" }}
+                onMouseOver={e => (e.currentTarget.style.backgroundColor = "var(--accent-hover)")}
+                onMouseOut={e => (e.currentTarget.style.backgroundColor = "var(--accent)")}
+              >
+                Start solving
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                href="/problems"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold border text-slate-200 transition"
+                style={{ borderColor: "var(--border-strong)", backgroundColor: "rgba(14,20,32,0.7)" }}
+                onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-hover)")}
+                onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
+              >
+                Browse 20 problems
+              </Link>
+
+              {!user && (
+                <button
+                  onClick={openAuthModal}
+                  className="text-sm font-medium text-slate-400 hover:text-white transition underline underline-offset-4"
                 >
-                  <span>Solve Daily Problem ({dailyProblem.title})</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-
-                <Link
-                  href="/problems"
-                  className="inline-flex items-center space-x-2 px-6 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 font-semibold text-xs transition backdrop-blur-sm shadow-sm"
-                >
-                  <Code2 className="w-4 h-4 text-emerald-400" />
-                  <span>Browse 20 Problems</span>
-                </Link>
-
-                {!user && (
-                  <button
-                    onClick={openAuthModal}
-                    className="inline-flex items-center space-x-2 px-5 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-200 font-semibold text-xs transition backdrop-blur-sm"
-                  >
-                    <span>Connect Account</span>
-                  </button>
-                )}
-              </div>
+                  Sign in to sync progress
+                </button>
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Platform Features / Verification Strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl bg-[#0c121e] border border-slate-800 flex items-center space-x-3.5">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
-            <Code2 className="w-5 h-5" />
+      {/* ── Platform stats strip ── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { label: "Core problems", value: "20", sub: "Easy, Medium, Hard", color: "var(--accent)", Icon: Code2 },
+          { label: "Languages", value: "JS + Py", sub: "Deterministic judge", color: "var(--amber)", Icon: Cpu },
+          { label: "AI mentor", value: "Gemini", sub: "4-tier Socratic hints", color: "var(--cyan)", Icon: Sparkles },
+          { label: "Company tracks", value: "5", sub: "Google, Meta, Amazon…", color: "var(--rose)", Icon: Building2 },
+        ].map(({ label, value, sub, color, Icon }) => (
+          <div
+            key={label}
+            className="flex items-center gap-3.5 p-4 rounded-xl border"
+            style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+          >
+            <div
+              className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+              style={{ backgroundColor: `color-mix(in srgb, ${color} 10%, transparent)`, border: `1px solid color-mix(in srgb, ${color} 25%, transparent)` }}
+            >
+              <Icon className="w-4 h-4" style={{ color }} />
+            </div>
+            <div>
+              <div className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>{value}</div>
+              <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{sub}</div>
+            </div>
           </div>
-          <div>
-            <div className="text-sm font-extrabold text-white">20 Core Problems</div>
-            <span className="text-[11px] text-slate-400">Easy, Medium & Hard</span>
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-[#0c121e] border border-slate-800 flex items-center space-x-3.5">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
-            <Cpu className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-sm font-extrabold text-white">Dual JS & Python</div>
-            <span className="text-[11px] text-slate-400">Deterministic Judge</span>
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-[#0c121e] border border-slate-800 flex items-center space-x-3.5">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-sm font-extrabold text-white">Gemini 2.5 Flash</div>
-            <span className="text-[11px] text-slate-400">4-Tier AI Mentor</span>
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl bg-[#0c121e] border border-slate-800 flex items-center space-x-3.5">
-          <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0">
-            <Building2 className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-sm font-extrabold text-white">5 Company Tracks</div>
-            <span className="text-[11px] text-slate-400">Google, Meta & Amazon</span>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Interactive Practice Question Bank Showcase directly on Homepage */}
-      <section className="p-6 sm:p-8 rounded-3xl bg-[#0c121e] border border-slate-800 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* ── Problem showcase ── */}
+      <section className="space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold mb-1">
-              <span>Interactive Practice</span>
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-white">Coding practice question bank</h2>
-            <p className="text-xs text-slate-400 mt-1">
-              Solve interview-tested algorithms directly in the browser with real-time test evaluation
+            <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
+              Practice question bank
+            </h2>
+            <p className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
+              Interview-tested algorithms with real-time test evaluation
             </p>
           </div>
 
-          {/* Difficulty Filter Tabs */}
-          <div className="flex items-center gap-1.5 bg-slate-950 border border-slate-800 p-1 rounded-xl">
-            {(["All", "Easy", "Medium", "Hard"] as const).map((lvl) => (
-              <button
-                key={lvl}
-                onClick={() => setHomeFilter(lvl)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
-                  homeFilter === lvl
-                    ? "bg-emerald-500 text-slate-950 shadow-sm"
-                    : "text-slate-400 hover:text-white"
-                }`}
-              >
-                {lvl} {lvl === "All" ? `(20)` : lvl === "Easy" ? `(${easyCount})` : lvl === "Medium" ? `(${medCount})` : `(${hardCount})`}
-              </button>
-            ))}
+          <div
+            className="flex items-center gap-1 p-1 rounded-lg border self-start sm:self-auto"
+            style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+          >
+            {(["All", "Easy", "Medium", "Hard"] as const).map((lvl) => {
+              const count = lvl === "All" ? 20 : lvl === "Easy" ? easyCount : lvl === "Medium" ? medCount : hardCount;
+              const isActive = homeFilter === lvl;
+              return (
+                <button
+                  key={lvl}
+                  onClick={() => setHomeFilter(lvl)}
+                  className="px-3 py-1 rounded-md text-xs font-semibold transition"
+                  style={
+                    isActive
+                      ? { backgroundColor: "var(--accent)", color: "var(--accent-text)" }
+                      : { color: "var(--text-muted)" }
+                  }
+                  onMouseOver={e => { if (!isActive) e.currentTarget.style.color = "var(--text-primary)"; }}
+                  onMouseOut={e => { if (!isActive) e.currentTarget.style.color = "var(--text-muted)"; }}
+                >
+                  {lvl} ({count})
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Problem Grid Preview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {showcasedProblems.map((prob) => {
             const isSolved = state.solvedProblems.includes(prob.slug);
+            const diffColor =
+              prob.difficulty === "Easy" ? "var(--accent)" :
+              prob.difficulty === "Medium" ? "var(--amber)" : "var(--rose)";
             return (
-              <div
+              <Link
                 key={prob.id}
-                className="p-5 rounded-2xl bg-slate-950 border border-slate-800 hover:border-slate-700 transition flex flex-col justify-between space-y-4 group"
+                href={`/problems/${prob.slug}`}
+                className="group block p-5 rounded-xl border transition"
+                style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+                onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
+                onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border)")}
               >
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`text-[11px] font-bold px-2 py-0.5 rounded ${
-                        prob.difficulty === "Easy"
-                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                          : prob.difficulty === "Medium"
-                          ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                          : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                      }`}
-                    >
-                      {prob.difficulty}
-                    </span>
-                    <span className="text-[11px] font-mono text-slate-500">
-                      {prob.acceptanceRate}% acceptance
-                    </span>
-                  </div>
-
-                  <Link
-                    href={`/problems/${prob.slug}`}
-                    className="block font-bold text-sm text-white group-hover:text-emerald-400 transition"
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <span
+                    className="text-[11px] font-semibold px-2 py-0.5 rounded"
+                    style={{
+                      color: diffColor,
+                      backgroundColor: `color-mix(in srgb, ${diffColor} 10%, transparent)`,
+                    }}
                   >
-                    {prob.title}
-                  </Link>
-
-                  <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                    {prob.description.replace(/[`*]/g, "")}
-                  </p>
+                    {prob.difficulty}
+                  </span>
+                  {isSolved && (
+                    <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: "var(--accent)" }} />
+                  )}
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t border-slate-900">
+                <h3
+                  className="font-semibold text-sm mb-1.5 group-hover:text-emerald-400 transition"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {prob.title}
+                </h3>
+                <p className="text-xs line-clamp-2 leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>
+                  {prob.description.replace(/[`*]/g, "")}
+                </p>
+
+                <div className="flex items-center justify-between">
                   <div className="flex gap-1">
                     {prob.tags.slice(0, 2).map((t) => (
                       <span
                         key={t}
-                        className="text-[10px] text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded"
+                        className="text-[10px] px-1.5 py-0.5 rounded"
+                        style={{ color: "var(--text-muted)", backgroundColor: "var(--surface-2)", border: "1px solid var(--border)" }}
                       >
                         {t}
                       </span>
                     ))}
                   </div>
-
-                  <Link
-                    href={`/problems/${prob.slug}`}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 hover:text-emerald-300"
-                  >
-                    <span>{isSolved ? "Solved" : "Solve"}</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </Link>
+                  <span className="text-[11px] font-mono" style={{ color: "var(--text-muted)" }}>
+                    {prob.acceptanceRate}%
+                  </span>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
 
-        <div className="text-center pt-2">
+        <div className="text-center">
           <Link
             href="/problems"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-200 text-xs font-semibold transition"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold border transition"
+            style={{ color: "var(--text-secondary)", borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
+            onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
+            onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border)")}
           >
-            <span>View All 20 Problems in Catalog</span>
+            View all 20 problems
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </section>
 
-      {/* Placement Company Tracks */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
+      {/* ── Company interview tracks ── */}
+      <section className="space-y-5">
+        <div className="flex items-end justify-between">
           <div>
-            <h2 className="text-lg font-bold text-white flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-emerald-400" />
-              <span>Target company interview tracks</span>
+            <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
+              Company interview tracks
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Practice exact high-frequency questions asked in technical rounds
+            <p className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
+              High-frequency questions from top tech hiring pipelines
             </p>
           </div>
           <Link
             href="/interview-prep"
-            className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1"
+            className="text-xs font-medium flex items-center gap-1 transition"
+            style={{ color: "var(--accent)" }}
+            onMouseOver={e => (e.currentTarget.style.color = "var(--accent-hover)")}
+            onMouseOut={e => (e.currentTarget.style.color = "var(--accent)")}
           >
-            <span>All tracks</span>
-            <ArrowRight className="w-3 h-3" />
+            All tracks <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
           {COMPANY_TRACKS.map((comp) => {
             const solved = comp.slugs.filter((s) => state.solvedProblems.includes(s)).length;
+            const pct = Math.round((solved / comp.slugs.length) * 100);
             return (
               <Link
                 key={comp.id}
                 href="/interview-prep"
-                className="p-4 rounded-2xl bg-[#0c121e] border border-slate-800 hover:border-slate-700 transition flex flex-col justify-between space-y-3 group"
+                className="group flex flex-col justify-between p-4 rounded-xl border transition"
+                style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+                onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
+                onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border)")}
               >
-                <div className="flex items-center justify-between">
-                  <div className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-xs font-bold text-emerald-400 group-hover:border-emerald-500/40">
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold"
+                    style={{
+                      backgroundColor: "var(--surface-2)",
+                      border: "1px solid var(--border)",
+                      color: "var(--accent)",
+                    }}
+                  >
                     {comp.name.substring(0, 2).toUpperCase()}
                   </div>
-                  <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-medium">
+                  <span className="text-[10px] font-medium" style={{ color: "var(--text-muted)" }}>
                     {comp.frequency}
                   </span>
                 </div>
 
                 <div>
-                  <h4 className="font-bold text-xs text-white">{comp.name}</h4>
-                  <p className="text-[11px] text-slate-400 mt-0.5">{comp.slugs.length} curated problems</p>
-                </div>
+                  <h4 className="text-xs font-bold mb-0.5" style={{ color: "var(--text-primary)" }}>
+                    {comp.name}
+                  </h4>
+                  <p className="text-[11px] mb-3" style={{ color: "var(--text-muted)" }}>
+                    {comp.slugs.length} problems
+                  </p>
 
-                <div className="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-                  <div 
-                    className="bg-emerald-500 h-full"
-                    style={{ width: `${(solved / comp.slugs.length) * 100}%` }}
-                  />
+                  <div
+                    className="w-full h-1 rounded-full overflow-hidden"
+                    style={{ backgroundColor: "var(--border)" }}
+                  >
+                    <div
+                      className="h-full rounded-full"
+                      style={{ width: `${pct}%`, backgroundColor: "var(--accent)" }}
+                    />
+                  </div>
+                  <div className="text-[10px] mt-1" style={{ color: "var(--text-muted)" }}>
+                    {solved}/{comp.slugs.length} solved
+                  </div>
                 </div>
               </Link>
             );
@@ -322,52 +331,65 @@ export default function Home() {
         </div>
       </section>
 
-      {/* News & Engineering Insights */}
-      <section className="rounded-2xl border border-slate-800 bg-[#0c121e] p-6 space-y-4">
+      {/* ── Latest tech updates ── */}
+      <section
+        className="rounded-xl border p-6 space-y-5"
+        style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+      >
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-cyan-400" />
-              <span>Engineering and AI updates</span>
+            <h2 className="text-base font-bold" style={{ color: "var(--text-primary)" }}>
+              Engineering and AI updates
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Curated updates with practical relevance for software engineers
+            <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>
+              Curated for software engineers
             </p>
           </div>
           <Link
             href="/news"
-            className="text-xs text-cyan-400 hover:text-cyan-300 font-medium flex items-center gap-1"
+            className="text-xs font-medium flex items-center gap-1 transition"
+            style={{ color: "var(--cyan)" }}
+            onMouseOver={e => (e.currentTarget.style.opacity = "0.75")}
+            onMouseOut={e => (e.currentTarget.style.opacity = "1")}
           >
-            <span>All updates</span>
-            <ArrowRight className="w-3 h-3" />
+            All updates <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {NEWS_ITEMS.slice(0, 2).map((item) => (
             <div
               key={item.id}
-              className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex flex-col justify-between space-y-3"
+              className="p-4 rounded-lg border flex flex-col justify-between gap-3"
+              style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
             >
               <div>
-                <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                  <span className="text-emerald-400 font-medium">{item.category}</span>
-                  <span>{item.source}</span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-semibold" style={{ color: "var(--accent)" }}>
+                    {item.category}
+                  </span>
+                  <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                    {item.source}
+                  </span>
                 </div>
-                <h4 className="font-semibold text-xs text-slate-200">
+                <h4 className="text-xs font-semibold mb-1.5 leading-snug" style={{ color: "var(--text-primary)" }}>
                   {item.title}
                 </h4>
-                <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
                   {item.whyItMatters}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t border-slate-900">
+              <div
+                className="flex items-center justify-between pt-3 border-t"
+                style={{ borderColor: "var(--border)" }}
+              >
                 <div className="flex gap-1">
-                  {item.tags.map((tag) => (
+                  {item.tags.slice(0, 2).map((tag) => (
                     <span
                       key={tag}
-                      className="text-[10px] bg-slate-900 px-2 py-0.5 rounded text-slate-400"
+                      className="text-[10px] px-1.5 py-0.5 rounded"
+                      style={{ color: "var(--text-muted)", backgroundColor: "var(--surface)", border: "1px solid var(--border)" }}
                     >
                       {tag}
                     </span>
@@ -377,10 +399,12 @@ export default function Home() {
                   href={item.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                  className="flex items-center gap-1 text-[11px] font-medium transition"
+                  style={{ color: "var(--cyan)" }}
+                  onMouseOver={e => (e.currentTarget.style.opacity = "0.75")}
+                  onMouseOut={e => (e.currentTarget.style.opacity = "1")}
                 >
-                  <span>Source</span>
-                  <ExternalLink className="w-3 h-3" />
+                  Source <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
             </div>

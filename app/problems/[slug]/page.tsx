@@ -232,118 +232,124 @@ export default function ProblemArenaPage() {
   const isSolved = state.solvedProblems.includes(problem.slug) || editorialUnlocked;
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col bg-[#090d16]">
+    <div className="h-[calc(100vh-4rem)] flex flex-col" style={{ backgroundColor: "#07090f" }}>
       {/* Top Bar Navigation */}
-      <div className="h-12 border-b border-slate-800 bg-slate-950 px-4 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+      <div
+        className="h-11 px-4 flex items-center justify-between border-b"
+        style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+      >
+        <div className="flex items-center gap-3">
           <Link
             href="/problems"
-            className="flex items-center space-x-1.5 text-xs text-slate-400 hover:text-white transition"
+            className="flex items-center gap-1.5 text-xs font-medium transition"
+            style={{ color: "var(--text-muted)" }}
+            onMouseOver={e => (e.currentTarget.style.color = "var(--text-primary)")}
+            onMouseOut={e => (e.currentTarget.style.color = "var(--text-muted)")}
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Problem List</span>
+            Problems
           </Link>
-          <span className="text-slate-600">|</span>
-          <h2 className="text-sm font-bold text-white flex items-center gap-2">
+          <span style={{ color: "var(--border-strong)" }}>·</span>
+          <h2 className="text-xs font-bold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
             {problem.title}
-            {isSolved && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
+            {isSolved && <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "var(--accent)" }} />}
           </h2>
           <span
-            className={`text-[10px] font-semibold px-2 py-0.5 rounded ${
-              problem.difficulty === "Easy"
-                ? "bg-emerald-500/10 text-emerald-400"
-                : problem.difficulty === "Medium"
-                ? "bg-amber-500/10 text-amber-400"
-                : "bg-rose-500/10 text-rose-400"
-            }`}
+            className="text-[10px] font-semibold px-1.5 py-0.5 rounded"
+            style={{
+              color: problem.difficulty === "Easy" ? "var(--accent)" : problem.difficulty === "Medium" ? "var(--amber)" : "var(--rose)",
+              backgroundColor: problem.difficulty === "Easy" ? "var(--accent-subtle)" : problem.difficulty === "Medium" ? "var(--amber-subtle)" : "var(--rose-subtle)",
+            }}
           >
             {problem.difficulty}
           </span>
         </div>
 
-        <div className="flex items-center space-x-3">
-          {/* AI Mentor Trigger */}
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setIsAiOpen(!isAiOpen)}
-            className="flex items-center space-x-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold transition"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition"
+            style={{
+              backgroundColor: "var(--accent-subtle)",
+              color: "var(--accent)",
+              border: "1px solid rgba(16,185,129,0.25)",
+            }}
+            onMouseOver={e => (e.currentTarget.style.backgroundColor = "rgba(16,185,129,0.14)")}
+            onMouseOut={e => (e.currentTarget.style.backgroundColor = "var(--accent-subtle)")}
           >
             <Sparkles className="w-3.5 h-3.5" />
-            <span>AI Mentor</span>
+            AI mentor
           </button>
 
-          {/* Run Button */}
           <button
             onClick={handleRun}
             disabled={isRunning || isSubmitting}
             title="Shortcut: Ctrl + Enter"
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition disabled:opacity-50"
+            style={{ backgroundColor: "var(--surface-2)", color: "var(--text-secondary)", border: "1px solid var(--border-strong)" }}
+            onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-hover)")}
+            onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
           >
-            <Play className="w-3.5 h-3.5 fill-slate-200" />
-            <span>{isRunning ? "Running..." : "Run (Ctrl+↵)"}</span>
+            <Play className="w-3.5 h-3.5" style={{ fill: "currentcolor" }} />
+            {isRunning ? "Running…" : "Run"}
+            <span className="hidden sm:inline text-[10px] opacity-50 ml-0.5">Ctrl+↵</span>
           </button>
 
-          {/* Submit Button */}
           <button
             onClick={handleSubmit}
             disabled={isRunning || isSubmitting}
             title="Shortcut: Ctrl + Shift + Enter"
-            className="flex items-center space-x-1.5 px-4 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition shadow-md shadow-emerald-500/20 disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition disabled:opacity-50"
+            style={{ backgroundColor: "var(--accent)", color: "var(--accent-text)" }}
+            onMouseOver={e => (e.currentTarget.style.backgroundColor = "var(--accent-hover)")}
+            onMouseOut={e => (e.currentTarget.style.backgroundColor = "var(--accent)")}
           >
             <Send className="w-3.5 h-3.5" />
-            <span>{isSubmitting ? "Judging..." : "Submit (Ctrl+⇧+↵)"}</span>
+            {isSubmitting ? "Judging…" : "Submit"}
+            <span className="hidden sm:inline text-[10px] opacity-60 ml-0.5">Ctrl+⇧+↵</span>
           </button>
         </div>
       </div>
 
       {/* Main Split Body */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-slate-800 overflow-hidden">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x overflow-hidden" style={{ borderColor: "var(--border)" }}>
         {/* Left Pane: Description, Submissions, Editorial */}
-        <div className="flex flex-col h-full overflow-hidden bg-slate-950/40">
+        <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: "var(--canvas)" }}>
           {/* Tabs */}
-          <div className="flex border-b border-slate-800 px-4 pt-2 bg-slate-950">
-            <button
-              onClick={() => setActiveTab("description")}
-              className={`flex items-center space-x-2 px-3 py-2 text-xs font-semibold border-b-2 transition ${
-                activeTab === "description"
-                  ? "border-emerald-500 text-emerald-400"
-                  : "border-transparent text-slate-400 hover:text-white"
-              }`}
-            >
-              <FileCode className="w-3.5 h-3.5" />
-              <span>Description</span>
-            </button>
-            <button
-              onClick={() => {
-                if (!isSolved && !editorialUnlocked) {
-                  setShowUnlockModal(true);
-                } else {
-                  setActiveTab("editorial");
-                }
-              }}
-              className={`flex items-center space-x-2 px-3 py-2 text-xs font-semibold border-b-2 transition ${
-                activeTab === "editorial"
-                  ? "border-emerald-500 text-emerald-400"
-                  : "border-transparent text-slate-400 hover:text-white"
-              }`}
-            >
-              {isSolved || editorialUnlocked ? (
-                <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-              ) : (
-                <Lock className="w-3.5 h-3.5 text-amber-400" />
-              )}
-              <span>Editorial</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("submissions")}
-              className={`flex items-center space-x-2 px-3 py-2 text-xs font-semibold border-b-2 transition ${
-                activeTab === "submissions"
-                  ? "border-emerald-500 text-emerald-400"
-                  : "border-transparent text-slate-400 hover:text-white"
-              }`}
-            >
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>Submissions</span>
-            </button>
+          <div
+            className="flex border-b px-4 pt-1"
+            style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+          >
+            {[
+              { key: "description", label: "Description", icon: FileCode },
+              { key: "editorial", label: "Editorial", icon: isSolved || editorialUnlocked ? BookOpen : Lock },
+              { key: "submissions", label: "Submissions", icon: CheckCircle2 },
+            ].map(({ key, label, icon: Icon }) => {
+              const isActive = activeTab === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => {
+                    if (key === "editorial" && !isSolved && !editorialUnlocked) {
+                      setShowUnlockModal(true);
+                    } else {
+                      setActiveTab(key as any);
+                    }
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-2.5 text-xs font-semibold border-b-2 transition"
+                  style={
+                    isActive
+                      ? { borderColor: "var(--accent)", color: "var(--accent)" }
+                      : { borderColor: "transparent", color: "var(--text-muted)" }
+                  }
+                  onMouseOver={e => { if (!isActive) e.currentTarget.style.color = "var(--text-primary)"; }}
+                  onMouseOut={e => { if (!isActive) e.currentTarget.style.color = "var(--text-muted)"; }}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Tab Content */}
@@ -494,13 +500,21 @@ export default function ProblemArenaPage() {
         </div>
 
         {/* Right Pane: Code Editor & Console Output */}
-        <div className="flex flex-col h-full overflow-hidden bg-[#090d16]">
+        <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: "#07090f" }}>
           {/* Editor Header */}
-          <div className="h-10 border-b border-slate-800 bg-slate-950 px-4 flex items-center justify-between">
+          <div
+            className="h-10 border-b px-4 flex items-center justify-between"
+            style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+          >
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value as any)}
-              className="bg-slate-900 border border-slate-800 rounded-md text-xs text-slate-300 py-1 px-2.5 focus:outline-none focus:border-emerald-500"
+              className="rounded-md text-xs py-1 px-2.5 outline-none transition"
+              style={{
+                backgroundColor: "var(--surface)",
+                border: "1px solid var(--border-strong)",
+                color: "var(--text-secondary)",
+              }}
             >
               <option value="python">Python 3</option>
               <option value="javascript">JavaScript (Node.js)</option>
@@ -508,7 +522,9 @@ export default function ProblemArenaPage() {
               <option value="java">Java 21</option>
             </select>
 
-            <span className="text-[11px] text-slate-500">Draft saved in local storage</span>
+            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+              Draft saved locally
+            </span>
           </div>
 
           {/* Monaco Editor Canvas */}
@@ -531,33 +547,39 @@ export default function ProblemArenaPage() {
           </div>
 
           {/* Bottom Execution Console */}
-          <div className="h-56 border-t border-slate-800 bg-slate-950 p-3 flex flex-col justify-between overflow-hidden">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
-              <div className="flex items-center space-x-3 text-xs">
+          <div
+            className="h-56 border-t p-3 flex flex-col justify-between overflow-hidden"
+            style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+          >
+            <div className="flex items-center justify-between pb-2 border-b" style={{ borderColor: "var(--border)" }}>
+              <div className="flex items-center gap-3 text-xs">
                 <button
                   onClick={() => setConsoleTab("testcase")}
-                  className={`font-bold transition ${
-                    consoleTab === "testcase" ? "text-emerald-400" : "text-slate-400 hover:text-white"
-                  }`}
+                  className="font-semibold transition"
+                  style={{ color: consoleTab === "testcase" ? "var(--accent)" : "var(--text-muted)" }}
+                  onMouseOver={e => { if (consoleTab !== "testcase") e.currentTarget.style.color = "var(--text-primary)"; }}
+                  onMouseOut={e => { if (consoleTab !== "testcase") e.currentTarget.style.color = "var(--text-muted)"; }}
                 >
                   Testcase
                 </button>
                 <button
                   onClick={() => setConsoleTab("output")}
-                  className={`font-bold transition ${
-                    consoleTab === "output" ? "text-emerald-400" : "text-slate-400 hover:text-white"
-                  }`}
+                  className="font-semibold transition"
+                  style={{ color: consoleTab === "output" ? "var(--accent)" : "var(--text-muted)" }}
+                  onMouseOver={e => { if (consoleTab !== "output") e.currentTarget.style.color = "var(--text-primary)"; }}
+                  onMouseOut={e => { if (consoleTab !== "output") e.currentTarget.style.color = "var(--text-muted)"; }}
                 >
-                  Test Result
+                  Test result
                 </button>
 
                 {verdict && (
                   <span
-                    className={`font-semibold px-2 py-0.5 rounded text-[11px] ${
+                    className="font-semibold px-2 py-0.5 rounded text-[11px]"
+                    style={
                       verdict === "Accepted"
-                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
-                        : "bg-rose-500/10 text-rose-400 border border-rose-500/30"
-                    }`}
+                        ? { backgroundColor: "var(--accent-subtle)", color: "var(--accent)", border: "1px solid rgba(16,185,129,0.25)" }
+                        : { backgroundColor: "var(--rose-subtle)", color: "var(--rose)", border: "1px solid rgba(244,63,94,0.25)" }
+                    }
                   >
                     {verdict}
                   </span>
@@ -565,13 +587,13 @@ export default function ProblemArenaPage() {
               </div>
 
               {runtime !== null && (
-                <div className="flex items-center space-x-3 text-[11px] text-slate-400">
+                <div className="flex items-center gap-3 text-[11px]" style={{ color: "var(--text-muted)" }}>
                   <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-slate-500" />
+                    <Clock className="w-3 h-3" />
                     {runtime} ms
                   </span>
                   <span className="flex items-center gap-1">
-                    <Database className="w-3 h-3 text-slate-500" />
+                    <Database className="w-3 h-3" />
                     {memory} KB
                   </span>
                 </div>
@@ -682,20 +704,28 @@ export default function ProblemArenaPage() {
       {/* Editorial Early Unlock Modal */}
       {showUnlockModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-950 border border-slate-800 max-w-md w-full rounded-3xl p-6 space-y-4">
-            <div className="flex items-center space-x-3 text-amber-400">
-              <Lock className="w-6 h-6" />
-              <h3 className="text-lg font-bold text-white">Unlock Editorial Early?</h3>
+          <div
+            className="max-w-md w-full rounded-2xl p-6 space-y-4"
+            style={{ backgroundColor: "var(--canvas)", border: "1px solid var(--border-strong)" }}
+          >
+            <div className="flex items-center gap-3" style={{ color: "var(--amber)" }}>
+              <Lock className="w-5 h-5" />
+              <h3 className="text-base font-bold" style={{ color: "var(--text-primary)" }}>
+                Unlock editorial early?
+              </h3>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed">
-              You haven&apos;t solved this problem yet. Viewing the full editorial approach and reference code will reduce points awarded for this problem by 50% (PRD Section 8.A).
+            <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+              You haven&apos;t solved this problem yet. Viewing the full editorial approach and reference code will reduce points awarded by 50%.
             </p>
-            <div className="flex justify-end gap-3 pt-3">
+            <div className="flex justify-end gap-3 pt-2">
               <button
                 onClick={() => setShowUnlockModal(false)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                className="px-4 py-2 rounded-lg text-xs font-semibold transition"
+                style={{ backgroundColor: "var(--surface)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+                onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
+                onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border)")}
               >
-                Keep Trying
+                Keep trying
               </button>
               <button
                 onClick={() => {
@@ -703,9 +733,10 @@ export default function ProblemArenaPage() {
                   setShowUnlockModal(false);
                   setActiveTab("editorial");
                 }}
-                className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold"
+                className="px-4 py-2 rounded-lg text-xs font-bold transition"
+                style={{ backgroundColor: "var(--amber)", color: "#1a0f00" }}
               >
-                Confirm &amp; Unlock
+                Confirm & unlock
               </button>
             </div>
           </div>
@@ -714,17 +745,28 @@ export default function ProblemArenaPage() {
 
       {/* AI Mentor Drawer */}
       {isAiOpen && (
-        <div className="fixed inset-y-0 right-0 w-full sm:w-96 bg-slate-950 border-l border-slate-800 shadow-2xl z-50 flex flex-col justify-between">
-          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+        <div
+          className="fixed inset-y-0 right-0 w-full sm:w-96 shadow-2xl z-50 flex flex-col"
+          style={{ backgroundColor: "var(--canvas)", borderLeft: "1px solid var(--border)" }}
+        >
+          <div className="p-4 border-b flex items-center justify-between" style={{ borderColor: "var(--border)" }}>
+            <div className="flex items-center gap-2">
+              <div
+                className="w-7 h-7 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: "var(--accent-subtle)", color: "var(--accent)" }}
+              >
                 <Sparkles className="w-4 h-4" />
               </div>
-              <span className="font-bold text-sm text-white">Salamanders AI Mentor</span>
+              <span className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>
+                AI mentor
+              </span>
             </div>
             <button
               onClick={() => setIsAiOpen(false)}
-              className="text-xs text-slate-400 hover:text-white px-2 py-1 rounded"
+              className="text-xs px-2 py-1 rounded transition"
+              style={{ color: "var(--text-muted)" }}
+              onMouseOver={e => (e.currentTarget.style.color = "var(--text-primary)")}
+              onMouseOut={e => (e.currentTarget.style.color = "var(--text-muted)")}
             >
               ✕
             </button>
@@ -733,29 +775,30 @@ export default function ProblemArenaPage() {
           <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
             {/* Tiered Hints Selection */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-slate-300 block">
-                Tiered hint ladder
+              <label className="text-xs font-semibold block" style={{ color: "var(--text-secondary)" }}>
+                Hint level
               </label>
               <div className="grid grid-cols-4 gap-1.5">
                 {[1, 2, 3, 4].map((lvl) => (
                   <button
                     key={lvl}
                     onClick={() => setSelectedHintLevel(lvl)}
-                    className={`py-1.5 rounded-lg font-bold transition text-center ${
+                    className="py-1.5 rounded-lg font-bold transition text-center text-xs"
+                    style={
                       selectedHintLevel === lvl
-                        ? "bg-emerald-500 text-slate-950"
-                        : "bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800"
-                    }`}
+                        ? { backgroundColor: "var(--accent)", color: "var(--accent-text)" }
+                        : { backgroundColor: "var(--surface)", color: "var(--text-secondary)", border: "1px solid var(--border)" }
+                    }
                   >
                     L{lvl}
                   </button>
                 ))}
               </div>
-              <p className="text-[10px] text-slate-500">
-                {selectedHintLevel === 1 && "L1: Conceptual nudge without spoilers"}
-                {selectedHintLevel === 2 && "L2: Standard algorithm pattern & intuition"}
-                {selectedHintLevel === 3 && "L3: Step-by-step plan & pseudo-code"}
-                {selectedHintLevel === 4 && "L4: Full optimal code solution (gated)"}
+              <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>
+                {selectedHintLevel === 1 && "Conceptual nudge without spoilers"}
+                {selectedHintLevel === 2 && "Algorithm pattern and intuition"}
+                {selectedHintLevel === 3 && "Step-by-step plan and pseudo-code"}
+                {selectedHintLevel === 4 && "Full optimal solution (gated)"}
               </p>
             </div>
 
@@ -764,29 +807,41 @@ export default function ProblemArenaPage() {
               <button
                 onClick={() => handleAiAction("hint")}
                 disabled={aiLoading}
-                className="flex-1 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold transition disabled:opacity-50"
+                className="flex-1 py-2 rounded-lg font-semibold transition disabled:opacity-50 text-xs"
+                style={{ backgroundColor: "var(--accent-subtle)", color: "var(--accent)", border: "1px solid rgba(16,185,129,0.25)" }}
+                onMouseOver={e => (e.currentTarget.style.backgroundColor = "rgba(16,185,129,0.14)")}
+                onMouseOut={e => (e.currentTarget.style.backgroundColor = "var(--accent-subtle)")}
               >
-                {aiLoading ? "Generating..." : `Get L${selectedHintLevel} Hint`}
+                {aiLoading ? "Generating…" : `Get L${selectedHintLevel} hint`}
               </button>
               <button
                 onClick={() => handleAiAction("explain")}
                 disabled={aiLoading}
-                className="flex-1 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 font-semibold transition disabled:opacity-50"
+                className="flex-1 py-2 rounded-lg font-semibold transition disabled:opacity-50 text-xs"
+                style={{ backgroundColor: "var(--surface)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+                onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
+                onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border)")}
               >
-                Explain Code
+                Explain code
               </button>
             </div>
 
             {/* AI Response Display */}
             {aiMessage && (
-              <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 leading-relaxed whitespace-pre-wrap font-sans">
+              <div
+                className="p-3.5 rounded-xl leading-relaxed whitespace-pre-wrap font-sans"
+                style={{ backgroundColor: "var(--surface)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}
+              >
                 {aiMessage}
               </div>
             )}
           </div>
 
-          <div className="p-3 border-t border-slate-800/80 bg-slate-950 text-center text-[11px] text-slate-500">
-            Powered by Google Gemini 2.5 Flash • Context aware
+          <div
+            className="p-3 border-t text-center text-[11px]"
+            style={{ borderColor: "var(--border)", color: "var(--text-muted)" }}
+          >
+            Powered by Google Gemini 2.5 Flash
           </div>
         </div>
       )}

@@ -65,37 +65,39 @@ export default function DashboardPage() {
 
       {/* Top Stat Summary Pills */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Total points</span>
-          <div className="text-2xl font-black text-emerald-400">{state.points}</div>
-          <span className="text-[11px] text-slate-500 mt-1 block">Verified ledger</span>
+        <div className="p-5 rounded-xl border" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}>
+          <span className="text-xs block mb-1" style={{ color: "var(--text-muted)" }}>Total points</span>
+          <div className="text-2xl font-black" style={{ color: "var(--accent)" }}>{state.points}</div>
+          <span className="text-[11px] mt-1 block" style={{ color: "var(--text-muted)" }}>Verified ledger</span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Current streak</span>
-          <div className="text-2xl font-black text-amber-400 flex items-center gap-1.5">
-            <Flame className="w-5 h-5 text-amber-400" />
+        <div className="p-5 rounded-xl border" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}>
+          <span className="text-xs block mb-1" style={{ color: "var(--text-muted)" }}>Current streak</span>
+          <div className="text-2xl font-black flex items-center gap-1.5" style={{ color: "var(--amber)" }}>
+            <Flame className="w-5 h-5" />
             <span>{state.streak} days</span>
           </div>
-          <span className="text-[11px] text-slate-500 mt-1 block">
+          <span className="text-[11px] mt-1 block" style={{ color: "var(--text-muted)" }}>
             Longest: {state.longestStreak} days
           </span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Weekly target</span>
-          <div className="text-2xl font-black text-white">
-            {state.solvedProblems.length} <span className="text-xs text-slate-500 font-normal">/ 5 problems</span>
+        <div className="p-5 rounded-xl border" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}>
+          <span className="text-xs block mb-1" style={{ color: "var(--text-muted)" }}>Weekly target</span>
+          <div className="text-2xl font-black" style={{ color: "var(--text-primary)" }}>
+            {state.solvedProblems.length} <span className="text-xs font-normal" style={{ color: "var(--text-muted)" }}>/ 5 problems</span>
           </div>
-          <span className="text-[11px] text-emerald-400 mt-1 block">
+          <span className="text-[11px] mt-1 block" style={{ color: "var(--accent)" }}>
             {Math.round((state.solvedProblems.length / 5) * 100)}% completed
           </span>
         </div>
 
-        <div className="p-5 rounded-2xl bg-[#0c121e] border border-slate-800">
-          <span className="text-xs text-slate-400 block mb-1">Interview readiness</span>
-          <div className="text-2xl font-black text-cyan-400">84%</div>
-          <span className="text-[11px] text-slate-500 mt-1 block">Calculated from DSA tracks</span>
+        <div className="p-5 rounded-xl border" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}>
+          <span className="text-xs block mb-1" style={{ color: "var(--text-muted)" }}>Interview readiness</span>
+          <div className="text-2xl font-black" style={{ color: "var(--cyan)" }}>
+            {Math.min(100, Math.round((state.solvedProblems.length / 20) * 100 * 0.84 + 10))}%
+          </div>
+          <span className="text-[11px] mt-1 block" style={{ color: "var(--text-muted)" }}>Based on solved problems</span>
         </div>
       </div>
 

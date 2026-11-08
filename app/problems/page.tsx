@@ -4,17 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { PROBLEMS } from "@/lib/data/problems";
 import { useUserStore } from "@/lib/store";
-import { 
-  Search, 
-  CheckCircle2, 
-  Circle, 
-  ArrowRight, 
-  Code2, 
-  Sparkles,
-  Building2,
-  TrendingUp,
-  Layers
-} from "lucide-react";
+import { Search, CheckCircle2, ArrowRight } from "lucide-react";
 
 export default function ProblemsPage() {
   const { state } = useUserStore();
@@ -28,21 +18,20 @@ export default function ProblemsPage() {
   const medCount = PROBLEMS.filter((p) => p.difficulty === "Medium").length;
   const hardCount = PROBLEMS.filter((p) => p.difficulty === "Hard").length;
 
-  const easySolved = state.solvedProblems.filter((slug) => {
-    return PROBLEMS.find((p) => p.slug === slug)?.difficulty === "Easy";
-  }).length;
+  const easySolved = state.solvedProblems.filter((slug) =>
+    PROBLEMS.find((p) => p.slug === slug)?.difficulty === "Easy"
+  ).length;
+  const medSolved = state.solvedProblems.filter((slug) =>
+    PROBLEMS.find((p) => p.slug === slug)?.difficulty === "Medium"
+  ).length;
+  const hardSolved = state.solvedProblems.filter((slug) =>
+    PROBLEMS.find((p) => p.slug === slug)?.difficulty === "Hard"
+  ).length;
 
-  const medSolved = state.solvedProblems.filter((slug) => {
-    return PROBLEMS.find((p) => p.slug === slug)?.difficulty === "Medium";
-  }).length;
-
-  const hardSolved = state.solvedProblems.filter((slug) => {
-    return PROBLEMS.find((p) => p.slug === slug)?.difficulty === "Hard";
-  }).length;
-
-  const categories = useMemo(() => {
-    return ["All", ...Array.from(new Set(PROBLEMS.map((p) => p.category)))];
-  }, []);
+  const categories = useMemo(
+    () => ["All", ...Array.from(new Set(PROBLEMS.map((p) => p.category)))],
+    []
+  );
 
   const filteredProblems = useMemo(() => {
     return PROBLEMS.filter((p) => {
@@ -51,142 +40,130 @@ export default function ProblemsPage() {
         p.tags.some((t) => t.toLowerCase().includes(search.toLowerCase())) ||
         p.category.toLowerCase().includes(search.toLowerCase()) ||
         p.companies.some((c) => c.toLowerCase().includes(search.toLowerCase()));
-
-      const matchesDiff =
-        selectedDifficulty === "All" || p.difficulty === selectedDifficulty;
-
-      const matchesCat =
-        selectedCategory === "All" || p.category === selectedCategory;
-
+      const matchesDiff = selectedDifficulty === "All" || p.difficulty === selectedDifficulty;
+      const matchesCat = selectedCategory === "All" || p.category === selectedCategory;
       const isSolved = state.solvedProblems.includes(p.slug);
       const matchesStatus =
         selectedStatus === "All" ||
         (selectedStatus === "Solved" && isSolved) ||
         (selectedStatus === "Unsolved" && !isSolved);
-
       return matchesSearch && matchesDiff && matchesCat && matchesStatus;
     });
   }, [search, selectedDifficulty, selectedCategory, selectedStatus, state.solvedProblems]);
 
+  const difficultyCards = [
+    { label: "All", count: totalCount, solved: state.solvedProblems.length, color: "var(--text-primary)" },
+    { label: "Easy", count: easyCount, solved: easySolved, color: "var(--accent)" },
+    { label: "Medium", count: medCount, solved: medSolved, color: "var(--amber)" },
+    { label: "Hard", count: hardCount, solved: hardSolved, color: "var(--rose)" },
+  ];
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-7">
+
+      {/* Page header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-2">
-            <Code2 className="w-3.5 h-3.5" />
-            <span>20 Curated Placement Problems</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Problem catalog</h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Core interview question bank covering Arrays, Strings, Sliding Window, DP, Graphs, and Trees
+          <h1 className="text-2xl font-extrabold" style={{ color: "var(--text-primary)" }}>
+            Problem catalog
+          </h1>
+          <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+            20 curated placement problems — Arrays, Strings, Sliding Window, DP, Graphs, Trees
           </p>
         </div>
 
-        {/* User Progress Pill */}
-        <div className="flex items-center gap-2 bg-[#0c121e] border border-slate-800 px-4 py-2 rounded-2xl">
-          <div className="text-xs text-slate-400">Solved</div>
-          <div className="text-sm font-bold text-emerald-400">
-            {state.solvedProblems.length} <span className="text-slate-500 font-normal">/ {totalCount}</span>
-          </div>
-          <div className="w-16 bg-slate-900 h-1.5 rounded-full overflow-hidden ml-2">
-            <div 
-              className="bg-emerald-500 h-full transition"
-              style={{ width: `${(state.solvedProblems.length / totalCount) * 100}%` }}
+        <div
+          className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border self-start sm:self-auto"
+          style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+        >
+          <span className="text-xs" style={{ color: "var(--text-muted)" }}>Solved</span>
+          <span className="text-sm font-bold" style={{ color: "var(--accent)" }}>
+            {state.solvedProblems.length}
+            <span className="font-normal ml-1" style={{ color: "var(--text-muted)" }}>/ {totalCount}</span>
+          </span>
+          <div className="w-20 h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "var(--border)" }}>
+            <div
+              className="h-full rounded-full"
+              style={{ width: `${(state.solvedProblems.length / totalCount) * 100}%`, backgroundColor: "var(--accent)" }}
             />
           </div>
         </div>
       </div>
 
-      {/* Interactive Difficulty Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <button
-          onClick={() => setSelectedDifficulty("All")}
-          className={`p-4 rounded-2xl border text-left transition ${
-            selectedDifficulty === "All"
-              ? "bg-slate-800/80 border-slate-600 shadow-sm"
-              : "bg-[#0c121e] border-slate-800 hover:border-slate-700"
-          }`}
-        >
-          <span className="text-xs text-slate-400 block font-medium">All Problems</span>
-          <div className="text-2xl font-extrabold text-white mt-1">{totalCount}</div>
-          <span className="text-[11px] text-slate-500 mt-0.5 block">
-            {state.solvedProblems.length} solved
-          </span>
-        </button>
-
-        <button
-          onClick={() => setSelectedDifficulty("Easy")}
-          className={`p-4 rounded-2xl border text-left transition ${
-            selectedDifficulty === "Easy"
-              ? "bg-emerald-500/10 border-emerald-500/40 shadow-sm"
-              : "bg-[#0c121e] border-slate-800 hover:border-slate-700"
-          }`}
-        >
-          <span className="text-xs text-emerald-400 block font-medium">Easy</span>
-          <div className="text-2xl font-extrabold text-white mt-1">{easyCount}</div>
-          <span className="text-[11px] text-emerald-500/80 mt-0.5 block">
-            {easySolved} / {easyCount} solved
-          </span>
-        </button>
-
-        <button
-          onClick={() => setSelectedDifficulty("Medium")}
-          className={`p-4 rounded-2xl border text-left transition ${
-            selectedDifficulty === "Medium"
-              ? "bg-amber-500/10 border-amber-500/40 shadow-sm"
-              : "bg-[#0c121e] border-slate-800 hover:border-slate-700"
-          }`}
-        >
-          <span className="text-xs text-amber-400 block font-medium">Medium</span>
-          <div className="text-2xl font-extrabold text-white mt-1">{medCount}</div>
-          <span className="text-[11px] text-amber-500/80 mt-0.5 block">
-            {medSolved} / {medCount} solved
-          </span>
-        </button>
-
-        <button
-          onClick={() => setSelectedDifficulty("Hard")}
-          className={`p-4 rounded-2xl border text-left transition ${
-            selectedDifficulty === "Hard"
-              ? "bg-rose-500/10 border-rose-500/40 shadow-sm"
-              : "bg-[#0c121e] border-slate-800 hover:border-slate-700"
-          }`}
-        >
-          <span className="text-xs text-rose-400 block font-medium">Hard</span>
-          <div className="text-2xl font-extrabold text-white mt-1">{hardCount}</div>
-          <span className="text-[11px] text-rose-500/80 mt-0.5 block">
-            {hardSolved} / {hardCount} solved
-          </span>
-        </button>
+      {/* Difficulty filter cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {difficultyCards.map(({ label, count, solved, color }) => {
+          const isActive = selectedDifficulty === label;
+          return (
+            <button
+              key={label}
+              onClick={() => setSelectedDifficulty(label)}
+              className="p-4 rounded-xl border text-left transition"
+              style={{
+                backgroundColor: isActive
+                  ? `color-mix(in srgb, ${color} 8%, var(--surface))`
+                  : "var(--surface)",
+                borderColor: isActive
+                  ? `color-mix(in srgb, ${color} 40%, transparent)`
+                  : "var(--border)",
+              }}
+            >
+              <span className="text-xs font-medium block" style={{ color: isActive ? color : "var(--text-muted)" }}>
+                {label === "All" ? "All problems" : label}
+              </span>
+              <div className="text-2xl font-black mt-1" style={{ color: "var(--text-primary)" }}>
+                {count}
+              </div>
+              <span className="text-[11px] mt-0.5 block" style={{ color: "var(--text-muted)" }}>
+                {solved} solved
+              </span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="bg-[#0c121e] border border-slate-800 rounded-2xl p-4 space-y-3">
-        <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
-          {/* Search Box */}
+      {/* Filters */}
+      <div
+        className="rounded-xl border p-4 space-y-3"
+        style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+      >
+        <div className="flex flex-col md:flex-row gap-3 items-start md:items-center justify-between">
+          {/* Search */}
           <div className="relative w-full md:w-80">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search
+              className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2"
+              style={{ color: "var(--text-muted)" }}
+            />
             <input
               type="text"
               placeholder="Search by title, tag, or company..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+              className="w-full pl-9 pr-3 py-2 rounded-lg text-xs outline-none transition"
+              style={{
+                backgroundColor: "var(--canvas)",
+                border: "1px solid var(--border)",
+                color: "var(--text-primary)",
+              }}
+              onFocus={e => (e.currentTarget.style.borderColor = "var(--accent)")}
+              onBlur={e => (e.currentTarget.style.borderColor = "var(--border)")}
             />
           </div>
 
-          {/* Status Filter Tabs */}
-          <div className="flex items-center gap-1.5 w-full md:w-auto">
+          {/* Status tabs */}
+          <div className="flex items-center gap-1">
             {["All", "Solved", "Unsolved"].map((st) => (
               <button
                 key={st}
                 onClick={() => setSelectedStatus(st)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                className="px-3 py-1.5 rounded-md text-xs font-semibold transition"
+                style={
                   selectedStatus === st
-                    ? "bg-slate-800 text-white border border-slate-700"
-                    : "text-slate-400 hover:text-white"
-                }`}
+                    ? { backgroundColor: "var(--surface-2)", color: "var(--text-primary)", border: "1px solid var(--border-strong)" }
+                    : { color: "var(--text-muted)", border: "1px solid transparent" }
+                }
+                onMouseOver={e => { if (selectedStatus !== st) e.currentTarget.style.color = "var(--text-primary)"; }}
+                onMouseOut={e => { if (selectedStatus !== st) e.currentTarget.style.color = "var(--text-muted)"; }}
               >
                 {st}
               </button>
@@ -194,70 +171,102 @@ export default function ProblemsPage() {
           </div>
         </div>
 
-        {/* Category Filter Chips */}
-        <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-800/80">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-medium transition ${
-                selectedCategory === cat
-                  ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400"
-                  : "bg-slate-900/60 border border-slate-800 text-slate-400 hover:text-slate-200"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {/* Category chips */}
+        <div
+          className="flex flex-wrap gap-1.5 pt-3 border-t"
+          style={{ borderColor: "var(--border)" }}
+        >
+          {categories.map((cat) => {
+            const isActive = selectedCategory === cat;
+            return (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className="px-2.5 py-1 rounded-md text-[11px] font-medium transition"
+                style={
+                  isActive
+                    ? { backgroundColor: "var(--accent-subtle)", color: "var(--accent)", border: "1px solid rgba(16,185,129,0.25)" }
+                    : { backgroundColor: "var(--canvas)", color: "var(--text-muted)", border: "1px solid var(--border)" }
+                }
+                onMouseOver={e => { if (!isActive) e.currentTarget.style.color = "var(--text-primary)"; }}
+                onMouseOut={e => { if (!isActive) e.currentTarget.style.color = "var(--text-muted)"; }}
+              >
+                {cat}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Problems Table */}
-      <div className="bg-[#0c121e] border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+      {/* Problems table */}
+      <div
+        className="rounded-xl border overflow-hidden"
+        style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
+      >
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-800 bg-slate-950/80 text-[11px] font-medium text-slate-400">
-                <th className="py-3.5 px-4 w-12 text-center">Status</th>
-                <th className="py-3.5 px-4">Title</th>
-                <th className="py-3.5 px-4">Difficulty</th>
-                <th className="py-3.5 px-4">Category</th>
-                <th className="py-3.5 px-4">Acceptance</th>
-                <th className="py-3.5 px-4 hidden lg:table-cell">Companies</th>
-                <th className="py-3.5 px-4 text-right">Action</th>
+              <tr
+                className="text-[11px] font-medium border-b"
+                style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)", color: "var(--text-muted)" }}
+              >
+                <th className="py-3 px-4 w-10 text-center">
+                  <span className="sr-only">Status</span>
+                </th>
+                <th className="py-3 px-4">Title</th>
+                <th className="py-3 px-4">Difficulty</th>
+                <th className="py-3 px-4">Category</th>
+                <th className="py-3 px-4">Acceptance</th>
+                <th className="py-3 px-4 hidden lg:table-cell">Companies</th>
+                <th className="py-3 px-4 text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/70 text-xs">
+            <tbody>
               {filteredProblems.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-10 text-center text-slate-500 text-xs">
-                    No problems matching your filter criteria.
+                  <td colSpan={7} className="py-12 text-center text-xs" style={{ color: "var(--text-muted)" }}>
+                    No problems match your filters.
                   </td>
                 </tr>
               ) : (
                 filteredProblems.map((p, idx) => {
                   const isSolved = state.solvedProblems.includes(p.slug);
+                  const diffColor =
+                    p.difficulty === "Easy" ? "var(--accent)" :
+                    p.difficulty === "Medium" ? "var(--amber)" : "var(--rose)";
+
                   return (
                     <tr
                       key={p.id}
-                      className="hover:bg-slate-900/40 transition group"
+                      className="border-b transition group"
+                      style={{ borderColor: "var(--border)" }}
+                      onMouseOver={e => (e.currentTarget.style.backgroundColor = "var(--surface-2)")}
+                      onMouseOut={e => (e.currentTarget.style.backgroundColor = "transparent")}
                     >
-                      {/* Solved Status */}
+                      {/* Status */}
                       <td className="py-3.5 px-4 text-center">
                         {isSolved ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 mx-auto" />
+                          <CheckCircle2 className="w-4 h-4 mx-auto" style={{ color: "var(--accent)" }} />
                         ) : (
-                          <div className="w-3.5 h-3.5 rounded-full border border-slate-700 mx-auto" />
+                          <div
+                            className="w-3.5 h-3.5 rounded-full border mx-auto"
+                            style={{ borderColor: "var(--border-strong)" }}
+                          />
                         )}
                       </td>
 
-                      {/* Problem Title */}
+                      {/* Title */}
                       <td className="py-3.5 px-4">
                         <Link
                           href={`/problems/${p.slug}`}
-                          className="font-medium text-slate-200 hover:text-emerald-400 transition"
+                          className="text-xs font-medium transition"
+                          style={{ color: "var(--text-secondary)" }}
+                          onMouseOver={e => (e.currentTarget.style.color = "var(--accent)")}
+                          onMouseOut={e => (e.currentTarget.style.color = "var(--text-secondary)")}
                         >
-                          <span className="text-slate-500 mr-2 font-mono text-[11px]">{idx + 1}.</span>
+                          <span className="font-mono text-[10px] mr-2" style={{ color: "var(--text-muted)" }}>
+                            {idx + 1}.
+                          </span>
                           {p.title}
                         </Link>
                       </td>
@@ -265,33 +274,31 @@ export default function ProblemsPage() {
                       {/* Difficulty */}
                       <td className="py-3.5 px-4">
                         <span
-                          className={`inline-block px-2 py-0.5 rounded text-[11px] font-semibold ${
-                            p.difficulty === "Easy"
-                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                              : p.difficulty === "Medium"
-                              ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                              : "bg-rose-500/10 text-rose-400 border border-rose-500/20"
-                          }`}
+                          className="inline-block px-2 py-0.5 rounded text-[11px] font-semibold"
+                          style={{
+                            color: diffColor,
+                            backgroundColor: `color-mix(in srgb, ${diffColor} 10%, transparent)`,
+                          }}
                         >
                           {p.difficulty}
                         </span>
                       </td>
 
                       {/* Category */}
-                      <td className="py-3.5 px-4 text-slate-300">
+                      <td className="py-3.5 px-4 text-xs" style={{ color: "var(--text-secondary)" }}>
                         {p.category}
                       </td>
 
-                      {/* Acceptance Rate */}
+                      {/* Acceptance */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-[11px] text-slate-300 w-10">
+                          <span className="font-mono text-[11px] w-9" style={{ color: "var(--text-secondary)" }}>
                             {p.acceptanceRate}%
                           </span>
-                          <div className="w-14 bg-slate-900 h-1 rounded-full overflow-hidden">
-                            <div 
-                              className="bg-slate-600 h-full"
-                              style={{ width: `${p.acceptanceRate}%` }}
+                          <div className="w-12 h-1 rounded-full overflow-hidden" style={{ backgroundColor: "var(--border)" }}>
+                            <div
+                              className="h-full rounded-full"
+                              style={{ width: `${p.acceptanceRate}%`, backgroundColor: "var(--border-strong)" }}
                             />
                           </div>
                         </div>
@@ -299,11 +306,12 @@ export default function ProblemsPage() {
 
                       {/* Companies */}
                       <td className="py-3.5 px-4 hidden lg:table-cell">
-                        <div className="flex flex-wrap gap-1 max-w-xs">
+                        <div className="flex flex-wrap gap-1">
                           {p.companies.slice(0, 3).map((comp) => (
                             <span
                               key={comp}
-                              className="text-[10px] bg-slate-950 border border-slate-800 text-slate-400 px-1.5 py-0.5 rounded"
+                              className="text-[10px] px-1.5 py-0.5 rounded"
+                              style={{ color: "var(--text-muted)", backgroundColor: "var(--canvas)", border: "1px solid var(--border)" }}
                             >
                               {comp}
                             </span>
@@ -315,10 +323,24 @@ export default function ProblemsPage() {
                       <td className="py-3.5 px-4 text-right">
                         <Link
                           href={`/problems/${p.slug}`}
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-slate-900 hover:bg-emerald-500 hover:text-slate-950 border border-slate-800 text-slate-300 text-xs font-semibold transition"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-semibold transition"
+                          style={{
+                            backgroundColor: "var(--canvas)",
+                            color: "var(--text-secondary)",
+                            border: "1px solid var(--border)",
+                          }}
+                          onMouseOver={e => {
+                            e.currentTarget.style.backgroundColor = "var(--accent)";
+                            e.currentTarget.style.color = "var(--accent-text)";
+                            e.currentTarget.style.borderColor = "var(--accent)";
+                          }}
+                          onMouseOut={e => {
+                            e.currentTarget.style.backgroundColor = "var(--canvas)";
+                            e.currentTarget.style.color = "var(--text-secondary)";
+                            e.currentTarget.style.borderColor = "var(--border)";
+                          }}
                         >
-                          <span>Solve</span>
-                          <ArrowRight className="w-3 h-3" />
+                          Solve <ArrowRight className="w-3 h-3" />
                         </Link>
                       </td>
                     </tr>
