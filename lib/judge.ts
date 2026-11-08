@@ -72,6 +72,29 @@ function validateCodeSecurity(code: string, language: string): { safe: boolean; 
   return { safe: true };
 }
 
+const TARGET_FUNCTIONS = [
+  'twoSum',
+  'reverseString',
+  'isPalindrome',
+  'findLargestElement',
+  'firstUniqChar',
+  'lengthOfLongestSubstring',
+  'productExceptSelf',
+  'groupAnagrams',
+  'search',
+  'topKFrequent',
+  'findMedianSortedArrays',
+  'trap',
+  'isMatch',
+  'ladderLength',
+  'solveNQueens',
+  'coinChange',
+  'isValid',
+  'maxSubArray',
+  'climbStairs',
+  'reverseList'
+];
+
 export type JudgeResult = {
   verdict: Verdict;
   runtimeMs: number;
@@ -91,6 +114,42 @@ export type JudgeResult = {
 
 function normalizeOutput(str: string): string {
   return str.trim().replace(/\r\n/g, "\n");
+}
+
+function compareOutputs(actualRaw: string, expectedRaw: string): boolean {
+  const actual = normalizeOutput(actualRaw);
+  const expected = normalizeOutput(expectedRaw);
+
+  if (actual === expected) return true;
+
+  // String quote normalization (e.g. "olleh" vs olleh)
+  const stripQuotes = (s: string) => (s.startsWith('"') && s.endsWith('"') ? s.slice(1, -1) : s);
+  if (stripQuotes(actual) === stripQuotes(expected)) return true;
+
+  // Float equivalence check (e.g., 2 vs 2.0 or 2.5 vs 2.50)
+  const numActual = Number(actual);
+  const numExpected = Number(expected);
+  if (!isNaN(numActual) && !isNaN(numExpected) && actual !== "" && expected !== "") {
+    if (Math.abs(numActual - numExpected) < 1e-5) return true;
+  }
+
+  // JSON deep compare for objects / arrays
+  try {
+    const jsonActual = JSON.parse(actual);
+    const jsonExpected = JSON.parse(expected);
+    if (JSON.stringify(jsonActual) === JSON.stringify(jsonExpected)) return true;
+
+    // Sub-array order-agnostic compare (e.g. for groupAnagrams, twoSum, or topKFrequent)
+    if (Array.isArray(jsonActual) && Array.isArray(jsonExpected)) {
+      if (jsonActual.length === jsonExpected.length) {
+        const s1 = JSON.stringify([...jsonActual].map((x) => (Array.isArray(x) ? [...x].sort() : x)).sort());
+        const s2 = JSON.stringify([...jsonExpected].map((x) => (Array.isArray(x) ? [...x].sort() : x)).sort());
+        if (s1 === s2) return true;
+      }
+    }
+  } catch (_) {}
+
+  return false;
 }
 
 export async function executeJudge(
@@ -159,10 +218,9 @@ export async function executeJudge(
         };
       }
 
-      const actual = normalizeOutput(caseResult.stdout || "");
-      const expected = normalizeOutput(tc.expectedOutput);
+      const isMatch = compareOutputs(caseResult.stdout || "", tc.expectedOutput);
 
-      if (actual === expected) {
+      if (isMatch) {
         passedTests++;
       } else {
         return {
@@ -221,11 +279,15 @@ function parseVal(s) {
 try {
   const args = inputLines.map(parseVal);
   let fn = null;
-  if (typeof twoSum === 'function') fn = twoSum;
-  else if (typeof isPalindrome === 'function') fn = isPalindrome;
-  else if (typeof lengthOfLongestSubstring === 'function') fn = lengthOfLongestSubstring;
-  else if (typeof coinChange === 'function') fn = coinChange;
-  else if (typeof trap === 'function') fn = trap;
+  const targetNames = ${JSON.stringify(TARGET_FUNCTIONS)};
+  for (const name of targetNames) {
+    try {
+      if (eval('typeof ' + name) === 'function') {
+        fn = eval(name);
+        break;
+      }
+    } catch(e) {}
+  }
 
   if (fn) {
     const res = fn(...args);
@@ -274,7 +336,7 @@ def parse_val(s):
 args = [parse_val(l) for l in lines]
 
 target_fn = None
-for name in ['twoSum', 'isPalindrome', 'lengthOfLongestSubstring', 'coinChange', 'trap']:
+for name in ${JSON.stringify(TARGET_FUNCTIONS)}:
     if name in globals():
         target_fn = globals()[name]
         break
