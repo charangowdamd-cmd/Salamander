@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PROBLEMS } from "@/lib/data/problems";
 import { useUserStore } from "@/lib/store";
 import { Search, CheckCircle2, ArrowRight, ChevronRight } from "lucide-react";
+import Plasma from "@/components/Plasma";
 
 export default function ProblemsPage() {
   const { state } = useUserStore();
@@ -60,11 +61,15 @@ export default function ProblemsPage() {
 
   return (
     <div
-      className="min-h-screen"
+      className="relative min-h-screen"
       style={{
         background: "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(239,68,68,0.06) 0%, transparent 50%), var(--canvas)",
       }}
     >
+      <div className="fixed inset-0 opacity-20 pointer-events-none" style={{ zIndex: 0 }}>
+        <Plasma color="#ff2727" speed={0.4} scale={0.7} twist={1} softness={0.65} shine={0.7} wave={1.95} mouseInteractive={false} />
+      </div>
+      <div className="relative" style={{ zIndex: 1 }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
 
         {/* Header */}
@@ -417,6 +422,7 @@ export default function ProblemsPage() {
             </table>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

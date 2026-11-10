@@ -5,6 +5,7 @@ import { COMPANY_TRACKS, ROADMAPS } from "@/lib/data/interview";
 import { PROBLEMS } from "@/lib/data/problems";
 import { useUserStore } from "@/lib/store";
 import { Briefcase, Map, Timer, ArrowRight, Building2, CheckCircle2 } from "lucide-react";
+import Plasma from "@/components/Plasma";
 
 export default function InterviewPrepPage() {
   const { state } = useUserStore();
@@ -14,7 +15,12 @@ export default function InterviewPrepPage() {
   const readinessScore = Math.min(100, Math.round((solvedCount / totalProblems) * 80 + (state.streak >= 3 ? 20 : 10)));
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div className="relative min-h-screen">
+      {/* Plasma page background */}
+      <div className="fixed inset-0 opacity-18 pointer-events-none" style={{ zIndex: 0 }}>
+        <Plasma color="#ff2727" speed={0.4} scale={0.75} twist={1.1} softness={0.65} shine={0.7} wave={1.95} mouseInteractive={false} />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10" style={{ zIndex: 1 }}>
       {/* Header and Readiness Section */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-8 rounded-3xl bg-[#0c121e] border border-slate-800">
         <div className="space-y-3 max-w-2xl">
@@ -173,6 +179,7 @@ export default function InterviewPrepPage() {
           ))}
         </div>
       </section>
+      </div>
     </div>
   );
 }

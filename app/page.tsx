@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 
 const Silk = dynamic(() => import("@/components/Silk"), { ssr: false });
+const Plasma = dynamic(() => import("@/components/Plasma"), { ssr: false });
 
 // Minimal code illustration for hero right panel
 function CodeIllustration() {
@@ -343,7 +344,12 @@ export default function Home() {
         </div>
 
         {/* ── Practice Question Bank ── */}
-        <section className="space-y-6">
+        <section className="relative space-y-6 rounded-2xl overflow-hidden" style={{ padding: "2rem", margin: "0 -2rem" }}>
+          {/* Plasma background */}
+          <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ zIndex: 0 }}>
+            <Plasma color="#ff2727" speed={0.6} scale={0.8} twist={0.8} softness={0.6} shine={0.8} wave={1.95} mouseInteractive={false} />
+          </div>
+          <div className="relative" style={{ zIndex: 1 }}>
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <h2 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>
@@ -547,10 +553,16 @@ export default function Home() {
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
+          </div>
         </section>
 
         {/* ── Company interview tracks ── */}
-        <section className="space-y-6">
+        <section className="relative space-y-6 rounded-2xl overflow-hidden" style={{ padding: "2rem", margin: "0 -2rem" }}>
+          {/* Plasma background */}
+          <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ zIndex: 0 }}>
+            <Plasma color="#ff2727" speed={0.5} scale={0.7} twist={1.2} softness={0.7} shine={0.7} wave={1.5} mouseInteractive={false} />
+          </div>
+          <div className="relative" style={{ zIndex: 1 }}>
           <div className="flex items-end justify-between">
             <div>
               <h2 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>
@@ -633,10 +645,16 @@ export default function Home() {
               );
             })}
           </div>
+          </div>
         </section>
 
         {/* ── Latest tech updates ── */}
-        <section className="space-y-5">
+        <section className="relative space-y-5 rounded-2xl overflow-hidden" style={{ padding: "2rem", margin: "0 -2rem" }}>
+          {/* Plasma background */}
+          <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ zIndex: 0 }}>
+            <Plasma color="#ff2727" speed={0.4} scale={0.6} twist={0.9} softness={0.65} shine={0.6} wave={2.1} mouseInteractive={false} />
+          </div>
+          <div className="relative" style={{ zIndex: 1 }}>
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
@@ -725,6 +743,7 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
           </div>
         </section>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { NEWS_ITEMS } from "@/lib/data/news";
 import { ExternalLink, Sparkles, Search } from "lucide-react";
+import Plasma from "@/components/Plasma";
 
 export default function NewsHubPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
@@ -19,7 +20,12 @@ export default function NewsHubPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="relative min-h-screen">
+      {/* Plasma page background */}
+      <div className="fixed inset-0 opacity-18 pointer-events-none" style={{ zIndex: 0 }}>
+        <Plasma color="#ff2727" speed={0.35} scale={0.65} twist={0.85} softness={0.7} shine={0.6} wave={2.0} mouseInteractive={false} />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8" style={{ zIndex: 1 }}>
       {/* Header */}
       <div>
         <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-medium mb-2">
@@ -111,6 +117,7 @@ export default function NewsHubPage() {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

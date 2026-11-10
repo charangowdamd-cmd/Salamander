@@ -15,6 +15,7 @@ import {
   Award,
   BookOpen
 } from "lucide-react";
+import Plasma from "@/components/Plasma";
 
 export default function DashboardPage() {
   const { state } = useUserStore();
@@ -43,7 +44,12 @@ export default function DashboardPage() {
     : 60.9;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div className="relative min-h-screen">
+      {/* Plasma page background */}
+      <div className="fixed inset-0 opacity-18 pointer-events-none" style={{ zIndex: 0 }}>
+        <Plasma color="#ff2727" speed={0.35} scale={0.65} twist={0.9} softness={0.7} shine={0.65} wave={1.8} mouseInteractive={false} />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10" style={{ zIndex: 1 }}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -203,6 +209,7 @@ export default function DashboardPage() {
             ))
           )}
         </div>
+      </div>
       </div>
     </div>
   );

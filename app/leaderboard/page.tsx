@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ALL_BADGES } from "@/lib/data/badges";
 import { useUserStore } from "@/lib/store";
 import { Trophy, Flame, Award, Medal, ShieldCheck } from "lucide-react";
+import Plasma from "@/components/Plasma";
 
 export default function LeaderboardPage() {
   const { state } = useUserStore();
@@ -20,7 +21,12 @@ export default function LeaderboardPage() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div className="relative min-h-screen">
+      {/* Plasma page background */}
+      <div className="fixed inset-0 opacity-18 pointer-events-none" style={{ zIndex: 0 }}>
+        <Plasma color="#ff2727" speed={0.45} scale={0.7} twist={1} softness={0.65} shine={0.75} wave={1.95} mouseInteractive={false} />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10" style={{ zIndex: 1 }}>
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
@@ -163,6 +169,7 @@ export default function LeaderboardPage() {
           })}
         </div>
       </section>
+      </div>
     </div>
   );
 }
