@@ -23,14 +23,6 @@ Salamanders is built to prepare software engineers for technical interviews and 
 
 ---
 
-## Live Deployment
-
-- Production URL: https://salamander-beige.vercel.app/
-- Hosting: Vercel (Serverless Next.js App Router)
-- Database and Auth: Supabase (PostgreSQL with Row-Level Security)
-
----
-
 ## Tech Stack
 
 - Frontend: Next.js 14 (App Router, React 18, Server Components)
@@ -39,7 +31,7 @@ Salamanders is built to prepare software engineers for technical interviews and 
 - Interactive Graphics: WebGL2 fluid shader background (Silk)
 - Icons: Lucide React
 - Backend: Next.js Route Handlers (Node.js runtime)
-- Database & Authentication: Supabase (PostgreSQL, Supabase Auth)
+- Database and Authentication: Supabase (PostgreSQL, Supabase Auth)
 - AI Model: Google Gemini 2.5 Flash via @google/generative-ai
 - Code Execution: Child-process execution with AST security screening and timeout protection
 
@@ -146,66 +138,6 @@ Salamander/
 
 ---
 
-## API Endpoints
-
-### Run Code Against Sample Tests
-- Method: `POST`
-- Path: `/api/run`
-- Body:
-  ```json
-  {
-    "problemSlug": "two-sum",
-    "code": "def twoSum(nums, target): ...",
-    "language": "python",
-    "customInput": "nums = [2,7,11,15]\ntarget = 9"
-  }
-  ```
-
-### Submit Code for Full Evaluation
-- Method: `POST`
-- Path: `/api/submit`
-- Body:
-  ```json
-  {
-    "problemSlug": "two-sum",
-    "code": "def twoSum(nums, target): ...",
-    "language": "python"
-  }
-  ```
-
-### Request AI Mentor Hints
-- Method: `POST`
-- Path: `/api/ai`
-- Body:
-  ```json
-  {
-    "problemSlug": "two-sum",
-    "code": "...",
-    "language": "python",
-    "action": "hint",
-    "level": 1
-  }
-  ```
-
-### Public Skill Badge
-- Method: `GET`
-- Path: `/api/badge/[username]`
-- Response: Dynamic SVG image displaying solved count and points.
-
----
-
-## Security Model
-
-The code execution engine applies multiple safeguards for untrusted code execution:
-
-- Pattern Screening: Blocks forbidden imports and system APIs (`child_process`, `fs`, `os`, `net`, `http`, `subprocess`, `ctypes`, `eval`, `process.exit`).
-- Concurrency Semaphore: Limits simultaneous executions to avoid host exhaustion.
-- Execution Timeout: Caps execution at 4.0 seconds per test case to stop infinite loops.
-- Memory Cap: Node.js memory is clamped via `--max-old-space-size=128`.
-- Output Clamping: stdout and stderr output buffers are restricted to prevent memory attacks.
-
----
-
 ## Testing
 
 Run the automated judge test suite:
@@ -219,19 +151,6 @@ Verify production build output:
 ```bash
 npm run build
 ```
-
----
-
-## Deployment to Vercel
-
-1. Push your changes to GitHub.
-2. In Vercel, import the repository `charangowdamd-cmd/Salamander`.
-3. Add the required environment variables under Project Settings:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY` (optional)
-   - `GEMINI_API_KEY` (optional)
-4. Deploy. Vercel automatically runs `npm run build` and serves the application.
 
 ---
 
