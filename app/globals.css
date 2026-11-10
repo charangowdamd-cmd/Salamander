@@ -7,23 +7,23 @@
 :root {
   /* Canvas & surfaces */
   --canvas: #0a0a0f;
-  --surface: rgba(255, 255, 255, 0.04);
+  --surface: rgba(18, 18, 28, 0.85);
   --surface-solid: #111118;
-  --surface-2: rgba(255, 255, 255, 0.07);
-  --surface-hover: rgba(255, 255, 255, 0.09);
-  --glass: rgba(20, 20, 30, 0.6);
-  --glass-strong: rgba(15, 15, 22, 0.85);
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --surface-hover: rgba(255, 255, 255, 0.12);
+  --glass: rgba(14, 14, 22, 0.85);
+  --glass-strong: rgba(10, 10, 18, 0.95);
 
   /* Borders */
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --border-hover: rgba(255, 255, 255, 0.22);
-  --border-red: rgba(239, 68, 68, 0.3);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --border-hover: rgba(255, 255, 255, 0.28);
+  --border-red: rgba(239, 68, 68, 0.35);
 
-  /* Text */
-  --text-primary: #f4f4f8;
-  --text-secondary: #9494a8;
-  --text-muted: #5a5a70;
+  /* Text - High Contrast */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
 
   /* Accent: Red */
   --red: #ef4444;
@@ -51,6 +51,10 @@
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   overflow-x: clip;
@@ -59,6 +63,11 @@ body {
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Smooth section scrolling offset for fixed/sticky navbar */
+[id] {
+  scroll-margin-top: 5rem;
 }
 
 /* Specific transitions only */
@@ -85,18 +94,23 @@ a:active {
   opacity: 0.9;
 }
 
-/* Glassmorphism card utility */
-.glass-card {
-  background: var(--glass);
+/* High contrast dark glass card with glowing hover effect */
+.glass-card,
+.dark-box {
+  background: rgba(14, 14, 22, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease, background-color 220ms ease;
 }
 
-.glass-card:hover {
-  border-color: var(--border-strong);
+.glass-card:hover,
+.dark-box:hover,
+.hover-glow:hover {
+  border-color: rgba(239, 68, 68, 0.45) !important;
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.22), 0 10px 32px rgba(0, 0, 0, 0.55) !important;
+  transform: translateY(-2px);
 }
 
 /* Reduced motion */

@@ -41,15 +41,21 @@ export default function LeaderboardPage() {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex items-center space-x-1 bg-[#0c121e] border border-slate-800 p-1 rounded-xl">
+        <div
+          className="flex items-center space-x-1 p-1 rounded-xl border"
+          style={{
+            background: "rgba(14,14,22,0.92)",
+            borderColor: "rgba(255,255,255,0.12)",
+          }}
+        >
           {(["all", "weekly", "monthly"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setFilter(tab)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition ${
                 filter === tab
-                  ? "bg-emerald-500 text-slate-950"
-                  : "text-slate-400 hover:text-white"
+                  ? "bg-red-500 text-white shadow-md shadow-red-500/30"
+                  : "text-slate-300 hover:text-white hover:bg-white/5"
               }`}
             >
               {tab === "all" ? "All time" : tab}
@@ -59,10 +65,26 @@ export default function LeaderboardPage() {
       </div>
 
       {/* Leaderboard Table */}
-      <div className="bg-[#0c121e] border border-slate-800 rounded-2xl overflow-hidden">
+      <div
+        className="rounded-2xl overflow-hidden border"
+        style={{
+          background: "rgba(14,14,22,0.94)",
+          borderColor: "rgba(255,255,255,0.12)",
+          backdropFilter: "blur(20px)",
+          boxShadow: "0 6px 24px rgba(0,0,0,0.45)",
+        }}
+      >
+        <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-slate-800 bg-slate-950/80 text-xs font-medium text-slate-400">
+            <tr
+              className="border-b text-xs font-bold uppercase tracking-wider"
+              style={{
+                background: "rgba(0,0,0,0.35)",
+                borderColor: "rgba(255,255,255,0.08)",
+                color: "var(--text-secondary)",
+              }}
+            >
               <th className="py-3.5 px-6 w-16 text-center">Rank</th>
               <th className="py-3.5 px-6">Developer</th>
               <th className="py-3.5 px-6">College or organization</th>
@@ -71,53 +93,54 @@ export default function LeaderboardPage() {
               <th className="py-3.5 px-6 text-right">Points</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/80 text-xs">
+          <tbody className="divide-y divide-white/5 text-xs">
             {mockUsers.map((u) => (
               <tr
                 key={u.username}
-                className={`transition ${
+                className={`transition-colors ${
                   u.isCurrentUser
-                    ? "bg-emerald-500/5 font-semibold"
-                    : "hover:bg-slate-900/40"
+                    ? "bg-red-500/10 font-semibold"
+                    : "hover:bg-white/5"
                 }`}
               >
                 <td className="py-4 px-6 text-center">
                   {u.rank <= 3 ? (
-                    <span className="font-mono font-bold text-amber-400">#{u.rank}</span>
+                    <span className="font-mono font-black text-amber-400">#{u.rank}</span>
                   ) : (
-                    <span className="font-mono text-slate-400">#{u.rank}</span>
+                    <span className="font-mono text-slate-300">#{u.rank}</span>
                   )}
                 </td>
                 <td className="py-4 px-6">
                   <Link
                     href={`/u/${u.username}`}
-                    className="flex items-center space-x-3 text-slate-100 hover:text-emerald-400 transition"
+                    className="flex items-center space-x-3 text-slate-100 hover:text-red-400 transition"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-xs font-bold text-slate-200">
+                    <div className="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/25 flex items-center justify-center text-xs font-bold text-red-400">
                       {u.username[0].toUpperCase()}
                     </div>
                     <div>
-                      <div className="font-medium text-white">{u.username}</div>
+                      <div className="font-bold text-white">{u.username}</div>
                       {u.isCurrentUser && (
-                        <span className="text-[10px] text-emerald-400 font-normal">You</span>
+                        <span className="text-[10px] text-red-400 font-semibold">You</span>
                       )}
                     </div>
                   </Link>
                 </td>
-                <td className="py-4 px-6 text-slate-400">{u.college}</td>
-                <td className="py-4 px-6 text-center font-mono text-amber-400">
+                <td className="py-4 px-6 text-slate-300 font-medium">{u.college}</td>
+                <td className="py-4 px-6 text-center font-mono font-bold text-amber-400">
                   {u.streak}d
                 </td>
-                <td className="py-4 px-6 text-center font-mono text-slate-300">
+                <td className="py-4 px-6 text-center font-mono text-slate-200">
                   {u.solved}
                 </td>
-                <td className="py-4 px-6 text-right font-mono font-bold text-emerald-400 text-xs">
+                <td className="py-4 px-6 text-right font-mono font-bold text-red-400 text-xs">
                   {u.points} pts
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Badges Showcase Section */}
@@ -127,7 +150,7 @@ export default function LeaderboardPage() {
             <Award className="w-4 h-4 text-amber-400" />
             <span>Milestone badges and honors</span>
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-300 mt-0.5">
             Verifiable achievements unlocked through consistent problem solving
           </p>
         </div>
@@ -138,31 +161,47 @@ export default function LeaderboardPage() {
             return (
               <div
                 key={badge.id}
-                className={`p-4 rounded-2xl border transition flex items-center space-x-3.5 ${
-                  isUnlocked
-                    ? "bg-[#0c121e] border-emerald-500/30"
-                    : "bg-slate-950/60 border-slate-800/80 opacity-60"
-                }`}
+                className="p-4 rounded-2xl border transition-all duration-200 flex items-center space-x-3.5"
+                style={{
+                  background: isUnlocked ? "rgba(14,14,22,0.92)" : "rgba(10,10,16,0.7)",
+                  borderColor: isUnlocked ? "rgba(239,68,68,0.3)" : "rgba(255,255,255,0.08)",
+                  boxShadow: isUnlocked ? "0 4px 16px rgba(0,0,0,0.4)" : "none",
+                  opacity: isUnlocked ? 1 : 0.65,
+                }}
+                onMouseOver={(e) => {
+                  if (isUnlocked) {
+                    e.currentTarget.style.borderColor = "rgba(239,68,68,0.5)";
+                    e.currentTarget.style.boxShadow = "0 0 20px rgba(239,68,68,0.25)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                  }
+                }}
+                onMouseOut={(e) => {
+                  if (isUnlocked) {
+                    e.currentTarget.style.borderColor = "rgba(239,68,68,0.3)";
+                    e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.4)";
+                    e.currentTarget.style.transform = "translateY(0px)";
+                  }
+                }}
               >
-                <div className="w-9 h-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400">
+                <div className="w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center justify-center text-red-400">
                   <Medal className="w-4 h-4" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-xs text-white">{badge.name}</h4>
                     <span
-                      className={`text-[9px] font-medium px-1.5 py-0.2 rounded ${
+                      className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
                         badge.rarity === "Legendary"
-                          ? "bg-amber-500/10 text-amber-400"
+                          ? "bg-amber-500/15 text-amber-400 border border-amber-500/30"
                           : badge.rarity === "Epic"
-                          ? "bg-purple-500/10 text-purple-400"
-                          : "bg-emerald-500/10 text-emerald-400"
+                          ? "bg-purple-500/15 text-purple-400 border border-purple-500/30"
+                          : "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
                       }`}
                     >
                       {badge.rarity.toLowerCase()}
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">{badge.description}</p>
+                  <p className="text-[11px] text-slate-300 mt-0.5 leading-relaxed">{badge.description}</p>
                 </div>
               </div>
             );

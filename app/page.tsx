@@ -282,6 +282,27 @@ export default function Home() {
                 Explore Problems
               </Link>
 
+              <a
+                href="#practice"
+                className="inline-flex items-center gap-1.5 px-4 py-3 rounded-xl text-xs font-semibold transition"
+                style={{
+                  background: "rgba(239,68,68,0.08)",
+                  border: "1px solid rgba(239,68,68,0.25)",
+                  color: "#ef4444",
+                  backdropFilter: "blur(12px)",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(239,68,68,0.5)";
+                  e.currentTarget.style.boxShadow = "0 0 16px rgba(239,68,68,0.25)";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(239,68,68,0.25)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                Question Bank &darr;
+              </a>
+
               {!user && (
                 <button
                   onClick={openAuthModal}
@@ -309,32 +330,36 @@ export default function Home() {
         <div
           className="rounded-2xl overflow-hidden"
           style={{
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.07)",
+            background: "rgba(14,14,22,0.9)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            backdropFilter: "blur(20px)",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.45)",
           }}
         >
           <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0"
-            style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+            style={{ borderColor: "rgba(255,255,255,0.08)" }}>
             {featureItems.map(({ icon: Icon, title, desc, color }) => (
               <div
                 key={title}
-                className="flex items-center gap-3 px-5 py-4"
-                style={{ borderColor: "rgba(255,255,255,0.07)" }}
+                className="flex items-center gap-3 px-5 py-4 transition-colors"
+                style={{ borderColor: "rgba(255,255,255,0.08)" }}
+                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.03)")}
+                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
               >
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
                   style={{
-                    background: `color-mix(in srgb, ${color} 12%, transparent)`,
-                    border: `1px solid color-mix(in srgb, ${color} 25%, transparent)`,
+                    background: `color-mix(in srgb, ${color} 15%, transparent)`,
+                    border: `1px solid color-mix(in srgb, ${color} 30%, transparent)`,
                   }}
                 >
                   <Icon className="w-4 h-4" style={{ color }} />
                 </div>
                 <div>
-                  <div className="text-xs font-semibold" style={{ color: "var(--text-primary)" }}>
+                  <div className="text-xs font-bold" style={{ color: "var(--text-primary)" }}>
                     {title}
                   </div>
-                  <div className="text-[11px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                  <div className="text-[11px] mt-0.5" style={{ color: "var(--text-secondary)" }}>
                     {desc}
                   </div>
                 </div>
@@ -344,7 +369,7 @@ export default function Home() {
         </div>
 
         {/* ── Practice Question Bank ── */}
-        <section className="relative space-y-6 rounded-2xl overflow-hidden" style={{ padding: "2rem", margin: "0 -2rem" }}>
+        <section id="practice" className="relative space-y-6 rounded-2xl overflow-hidden p-4 sm:p-6 lg:p-8 border border-white/10">
           {/* Plasma background */}
           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ zIndex: 0 }}>
             <Plasma color="#ff2727" speed={0.6} scale={0.8} twist={0.8} softness={0.6} shine={0.8} wave={1.95} mouseInteractive={false} />
@@ -361,7 +386,7 @@ export default function Home() {
             </div>
 
             {/* Difficulty filter */}
-            <div className="flex items-center gap-1 self-start sm:self-auto">
+            <div className="flex flex-wrap items-center gap-1.5 self-start sm:self-auto">
               {(["All", "Easy", "Medium", "Hard"] as const).map((lvl) => {
                 const count =
                   lvl === "All" ? 20 : lvl === "Easy" ? easyCount : lvl === "Medium" ? medCount : hardCount;
@@ -376,22 +401,22 @@ export default function Home() {
                     style={
                       isActive
                         ? {
-                            background: lvl === "All" ? "linear-gradient(135deg, #ef4444, #dc2626)" : `color-mix(in srgb, ${activeColor} 15%, transparent)`,
+                            background: lvl === "All" ? "linear-gradient(135deg, #ef4444, #dc2626)" : `color-mix(in srgb, ${activeColor} 20%, transparent)`,
                             color: lvl === "All" ? "#fff" : activeColor,
-                            border: `1px solid color-mix(in srgb, ${activeColor} 30%, transparent)`,
-                            boxShadow: lvl === "All" ? "0 0 12px rgba(239,68,68,0.3)" : "none",
+                            border: `1px solid color-mix(in srgb, ${activeColor} 40%, transparent)`,
+                            boxShadow: lvl === "All" ? "0 0 16px rgba(239,68,68,0.4)" : "none",
                           }
                         : {
-                            background: "rgba(255,255,255,0.04)",
-                            color: "var(--text-muted)",
-                            border: "1px solid rgba(255,255,255,0.08)",
+                            background: "rgba(20,20,30,0.85)",
+                            color: "var(--text-secondary)",
+                            border: "1px solid rgba(255,255,255,0.12)",
                           }
                     }
                     onMouseOver={(e) => {
                       if (!isActive) e.currentTarget.style.color = "var(--text-primary)";
                     }}
                     onMouseOut={(e) => {
-                      if (!isActive) e.currentTarget.style.color = "var(--text-muted)";
+                      if (!isActive) e.currentTarget.style.color = "var(--text-secondary)";
                     }}
                   >
                     {lvl === "All" ? "All Problems" : lvl}
@@ -402,7 +427,7 @@ export default function Home() {
           </div>
 
           {/* Problem cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
             {showcasedProblems.map((prob) => {
               const isSolved = state.solvedProblems.includes(prob.slug);
               const diffColor =
@@ -413,10 +438,10 @@ export default function Home() {
                   : "#ef4444";
               const diffBg =
                 prob.difficulty === "Easy"
-                  ? "rgba(34,197,94,0.1)"
+                  ? "rgba(34,197,94,0.15)"
                   : prob.difficulty === "Medium"
-                  ? "rgba(245,158,11,0.1)"
-                  : "rgba(239,68,68,0.1)";
+                  ? "rgba(245,158,11,0.15)"
+                  : "rgba(239,68,68,0.15)";
 
               // Icon per difficulty for card decoration
               const DiffIcon = prob.difficulty === "Hard" ? Terminal : prob.difficulty === "Medium" ? Brain : Zap;
@@ -425,27 +450,30 @@ export default function Home() {
                 <Link
                   key={prob.id}
                   href={`/problems/${prob.slug}`}
-                  className="group block rounded-2xl overflow-hidden transition"
+                  className="group block rounded-2xl overflow-hidden transition-all duration-200"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    backdropFilter: "blur(12px)",
+                    background: "rgba(14,14,22,0.92)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    backdropFilter: "blur(20px)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
                   }}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-                    e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                    e.currentTarget.style.borderColor = "rgba(239,68,68,0.45)";
+                    e.currentTarget.style.boxShadow = "0 0 24px rgba(239,68,68,0.22), 0 8px 30px rgba(0,0,0,0.6)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                    e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+                    e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.4)";
+                    e.currentTarget.style.transform = "translateY(0px)";
                   }}
                 >
                   <div className="p-5">
                     {/* Top row: difficulty + solved + icon */}
                     <div className="flex items-start justify-between mb-4">
                       <span
-                        className="text-[11px] font-bold px-2 py-0.5 rounded-md"
-                        style={{ color: diffColor, backgroundColor: diffBg }}
+                        className="text-[11px] font-bold px-2 py-0.5 rounded-md border"
+                        style={{ color: diffColor, backgroundColor: diffBg, borderColor: `color-mix(in srgb, ${diffColor} 30%, transparent)` }}
                       >
                         {prob.difficulty}
                       </span>
@@ -454,7 +482,7 @@ export default function Home() {
                           <CheckCircle2 className="w-4 h-4" style={{ color: "#22c55e" }} />
                         )}
                         <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center opacity-20 group-hover:opacity-40 transition"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center opacity-30 group-hover:opacity-60 transition"
                           style={{ color: diffColor }}
                         >
                           <DiffIcon className="w-5 h-5" />
@@ -471,7 +499,7 @@ export default function Home() {
                     </h3>
                     <p
                       className="text-xs line-clamp-2 leading-relaxed mb-5"
-                      style={{ color: "var(--text-muted)" }}
+                      style={{ color: "var(--text-secondary)" }}
                     >
                       {prob.description.replace(/[`*]/g, "")}
                     </p>
@@ -481,11 +509,11 @@ export default function Home() {
                       {prob.tags.slice(0, 2).map((t) => (
                         <span
                           key={t}
-                          className="text-[10px] px-2 py-0.5 rounded-md font-medium"
+                          className="text-[10px] px-2 py-0.5 rounded-md font-semibold"
                           style={{
-                            color: "var(--text-secondary)",
-                            background: "rgba(255,255,255,0.06)",
-                            border: "1px solid rgba(255,255,255,0.08)",
+                            color: "var(--text-primary)",
+                            background: "rgba(255,255,255,0.08)",
+                            border: "1px solid rgba(255,255,255,0.12)",
                           }}
                         >
                           {t}
@@ -496,18 +524,18 @@ export default function Home() {
                     {/* Acceptance bar */}
                     <div className="flex items-center gap-3">
                       <div
-                        className="flex-1 h-1 rounded-full overflow-hidden"
-                        style={{ background: "rgba(255,255,255,0.08)" }}
+                        className="flex-1 h-1.5 rounded-full overflow-hidden"
+                        style={{ background: "rgba(255,255,255,0.1)" }}
                       >
                         <div
                           className="h-full rounded-full"
                           style={{
                             width: `${prob.acceptanceRate}%`,
-                            background: `linear-gradient(90deg, ${diffColor}, ${diffColor}99)`,
+                            background: `linear-gradient(90deg, ${diffColor}, ${diffColor}cc)`,
                           }}
                         />
                       </div>
-                      <span className="text-[11px] font-mono whitespace-nowrap" style={{ color: "var(--text-muted)" }}>
+                      <span className="text-[11px] font-mono whitespace-nowrap" style={{ color: "var(--text-secondary)" }}>
                         {prob.acceptanceRate}% Acceptance
                       </span>
                     </div>
@@ -516,14 +544,14 @@ export default function Home() {
                   {/* Bottom action bar */}
                   <div
                     className="px-5 py-2.5 flex items-center justify-end border-t"
-                    style={{ borderColor: "rgba(255,255,255,0.06)" }}
+                    style={{ borderColor: "rgba(255,255,255,0.08)", background: "rgba(0,0,0,0.2)" }}
                   >
                     <span
-                      className="flex items-center gap-1 text-[11px] font-semibold transition"
-                      style={{ color: "var(--text-muted)" }}
+                      className="flex items-center gap-1 text-[11px] font-semibold transition group-hover:text-red-400"
+                      style={{ color: "var(--text-secondary)" }}
                     >
                       Solve
-                      <ChevronRight className="w-3.5 h-3.5" />
+                      <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                     </span>
                   </div>
                 </Link>
@@ -557,7 +585,7 @@ export default function Home() {
         </section>
 
         {/* ── Company interview tracks ── */}
-        <section className="relative space-y-6 rounded-2xl overflow-hidden" style={{ padding: "2rem", margin: "0 -2rem" }}>
+        <section id="companies" className="relative space-y-6 rounded-2xl overflow-hidden p-4 sm:p-6 lg:p-8 border border-white/10">
           {/* Plasma background */}
           <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ zIndex: 0 }}>
             <Plasma color="#ff2727" speed={0.5} scale={0.7} twist={1.2} softness={0.7} shine={0.7} wave={1.5} mouseInteractive={false} />
@@ -574,7 +602,7 @@ export default function Home() {
             </div>
             <Link
               href="/interview-prep"
-              className="text-xs font-medium flex items-center gap-1 transition"
+              className="text-xs font-semibold flex items-center gap-1 transition"
               style={{ color: "#ef4444" }}
               onMouseOver={(e) => (e.currentTarget.style.color = "#dc2626")}
               onMouseOut={(e) => (e.currentTarget.style.color = "#ef4444")}
@@ -583,7 +611,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mt-6">
             {COMPANY_TRACKS.map((comp) => {
               const solved = comp.slugs.filter((s) => state.solvedProblems.includes(s)).length;
               const pct = Math.round((solved / comp.slugs.length) * 100);
@@ -591,44 +619,47 @@ export default function Home() {
                 <Link
                   key={comp.id}
                   href="/interview-prep"
-                  className="group flex flex-col p-4 rounded-2xl transition"
+                  className="group flex flex-col p-4 rounded-2xl transition-all duration-200"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    backdropFilter: "blur(10px)",
+                    background: "rgba(14,14,22,0.92)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    backdropFilter: "blur(16px)",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
                   }}
                   onMouseOver={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(239,68,68,0.25)";
-                    e.currentTarget.style.background = "rgba(239,68,68,0.04)";
+                    e.currentTarget.style.borderColor = "rgba(239,68,68,0.45)";
+                    e.currentTarget.style.boxShadow = "0 0 24px rgba(239,68,68,0.22), 0 8px 30px rgba(0,0,0,0.6)";
+                    e.currentTarget.style.transform = "translateY(-2px)";
                   }}
                   onMouseOut={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
-                    e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+                    e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.4)";
+                    e.currentTarget.style.transform = "translateY(0px)";
                   }}
                 >
                   {/* Avatar */}
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black mb-3"
                     style={{
-                      background: "linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05))",
-                      border: "1px solid rgba(239,68,68,0.2)",
+                      background: "linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.06))",
+                      border: "1px solid rgba(239,68,68,0.3)",
                       color: "#ef4444",
                     }}
                   >
                     {comp.name.substring(0, 2).toUpperCase()}
                   </div>
 
-                  <h4 className="text-xs font-bold mb-0.5" style={{ color: "var(--text-primary)" }}>
+                  <h4 className="text-xs font-bold mb-0.5 group-hover:text-red-400 transition" style={{ color: "var(--text-primary)" }}>
                     {comp.name}
                   </h4>
-                  <p className="text-[10px] mb-3" style={{ color: "var(--text-muted)" }}>
+                  <p className="text-[10px] mb-3 font-medium" style={{ color: "var(--text-secondary)" }}>
                     {comp.slugs.length} problems · {comp.frequency}
                   </p>
 
                   {/* Progress */}
                   <div
-                    className="w-full h-1 rounded-full overflow-hidden"
-                    style={{ background: "rgba(255,255,255,0.08)" }}
+                    className="w-full h-1.5 rounded-full overflow-hidden"
+                    style={{ background: "rgba(255,255,255,0.1)" }}
                   >
                     <div
                       className="h-full rounded-full transition"
@@ -638,7 +669,7 @@ export default function Home() {
                       }}
                     />
                   </div>
-                  <div className="text-[10px] mt-1.5" style={{ color: "var(--text-muted)" }}>
+                  <div className="text-[10px] mt-1.5 font-semibold" style={{ color: "var(--text-secondary)" }}>
                     {solved}/{comp.slugs.length} solved
                   </div>
                 </Link>
@@ -649,7 +680,7 @@ export default function Home() {
         </section>
 
         {/* ── Latest tech updates ── */}
-        <section className="relative space-y-5 rounded-2xl overflow-hidden" style={{ padding: "2rem", margin: "0 -2rem" }}>
+        <section id="updates" className="relative space-y-5 rounded-2xl overflow-hidden p-4 sm:p-6 lg:p-8 border border-white/10">
           {/* Plasma background */}
           <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ zIndex: 0 }}>
             <Plasma color="#ff2727" speed={0.4} scale={0.6} twist={0.9} softness={0.65} shine={0.6} wave={2.1} mouseInteractive={false} />
@@ -666,7 +697,7 @@ export default function Home() {
             </div>
             <Link
               href="/news"
-              className="text-xs font-medium flex items-center gap-1 transition"
+              className="text-xs font-semibold flex items-center gap-1 transition"
               style={{ color: "var(--cyan)" }}
               onMouseOver={(e) => (e.currentTarget.style.opacity = "0.75")}
               onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
@@ -675,34 +706,45 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             {NEWS_ITEMS.slice(0, 2).map((item) => (
               <div
                 key={item.id}
-                className="p-5 rounded-2xl flex flex-col justify-between gap-4 transition"
+                className="p-5 rounded-2xl flex flex-col justify-between gap-4 transition-all duration-200"
                 style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  backdropFilter: "blur(10px)",
+                  background: "rgba(14,14,22,0.92)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  backdropFilter: "blur(16px)",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(239,68,68,0.45)";
+                  e.currentTarget.style.boxShadow = "0 0 24px rgba(239,68,68,0.22), 0 8px 30px rgba(0,0,0,0.6)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.4)";
+                  e.currentTarget.style.transform = "translateY(0px)";
                 }}
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <span
-                      className="text-[11px] font-semibold px-2 py-0.5 rounded-md"
+                      className="text-[11px] font-bold px-2 py-0.5 rounded-md border"
                       style={{
                         color: "#22c55e",
-                        background: "rgba(34,197,94,0.1)",
-                        border: "1px solid rgba(34,197,94,0.2)",
+                        background: "rgba(34,197,94,0.15)",
+                        borderColor: "rgba(34,197,94,0.3)",
                       }}
                     >
                       {item.category}
                     </span>
-                    <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                    <span className="text-[11px] font-medium" style={{ color: "var(--text-secondary)" }}>
                       {item.source}
                     </span>
                   </div>
-                  <h4 className="text-sm font-semibold mb-2 leading-snug" style={{ color: "var(--text-primary)" }}>
+                  <h4 className="text-sm font-bold mb-2 leading-snug" style={{ color: "var(--text-primary)" }}>
                     {item.title}
                   </h4>
                   <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
@@ -712,17 +754,17 @@ export default function Home() {
 
                 <div
                   className="flex items-center justify-between pt-3 border-t"
-                  style={{ borderColor: "rgba(255,255,255,0.07)" }}
+                  style={{ borderColor: "rgba(255,255,255,0.08)" }}
                 >
                   <div className="flex gap-1.5">
                     {item.tags.slice(0, 2).map((tag) => (
                       <span
                         key={tag}
-                        className="text-[10px] px-1.5 py-0.5 rounded"
+                        className="text-[10px] px-2 py-0.5 rounded font-semibold"
                         style={{
-                          color: "var(--text-muted)",
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1px solid rgba(255,255,255,0.08)",
+                          color: "var(--text-primary)",
+                          background: "rgba(255,255,255,0.08)",
+                          border: "1px solid rgba(255,255,255,0.12)",
                         }}
                       >
                         {tag}
@@ -733,7 +775,7 @@ export default function Home() {
                     href={item.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1 text-[11px] font-medium transition"
+                    className="flex items-center gap-1 text-[11px] font-semibold transition"
                     style={{ color: "var(--cyan)" }}
                     onMouseOver={(e) => (e.currentTarget.style.opacity = "0.75")}
                     onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}

@@ -112,11 +112,29 @@ export function AnalyticsCard({
       {/* Top 2 Cards: Problems Solved & Badges (Matches Reference Image 2) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Problems Solved Card */}
-        <div className="p-6 rounded-2xl bg-[#0c121e] border border-slate-800 flex flex-col justify-between">
+        <div
+          className="p-6 rounded-2xl border flex flex-col justify-between transition-all duration-200"
+          style={{
+            background: "rgba(14,14,22,0.92)",
+            borderColor: "rgba(255,255,255,0.12)",
+            backdropFilter: "blur(16px)",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.borderColor = "rgba(239,68,68,0.45)";
+            e.currentTarget.style.boxShadow = "0 0 24px rgba(239,68,68,0.22), 0 8px 30px rgba(0,0,0,0.6)";
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+            e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.4)";
+            e.currentTarget.style.transform = "translateY(0px)";
+          }}
+        >
           <div>
             <div className="flex items-center justify-between mb-4">
               <div>
-                <span className="text-xs text-slate-400 block font-medium">Problems Solved</span>
+                <span className="text-xs text-slate-300 block font-semibold">Problems Solved</span>
                 <div className="text-3xl font-extrabold text-white mt-1">{solvedCount}</div>
               </div>
 
@@ -149,68 +167,86 @@ export function AnalyticsCard({
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
                   <span className="text-sm font-bold text-white">{acceptanceRate.toFixed(1)}%</span>
-                  <span className="text-[10px] text-slate-400">Acceptance</span>
+                  <span className="text-[10px] text-slate-300 font-medium">Acceptance</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Difficulty breakdown underneath */}
-          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-800/80">
+          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/10">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5">
+              <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
                 Easy
               </span>
-              <div className="text-xs font-mono text-slate-300">
-                {easySolved} <span className="text-slate-500">/{easyTotal}</span>
+              <div className="text-xs font-mono text-slate-200">
+                {easySolved} <span className="text-slate-400">/{easyTotal}</span>
               </div>
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-amber-400 flex items-center gap-1.5">
+              <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" />
                 Medium
               </span>
-              <div className="text-xs font-mono text-slate-300">
-                {medSolved} <span className="text-slate-500">/{medTotal}</span>
+              <div className="text-xs font-mono text-slate-200">
+                {medSolved} <span className="text-slate-400">/{medTotal}</span>
               </div>
             </div>
 
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-rose-400 flex items-center gap-1.5">
+              <span className="text-xs font-bold text-rose-400 flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-rose-500 inline-block" />
                 Hard
               </span>
-              <div className="text-xs font-mono text-slate-300">
-                {hardSolved} <span className="text-slate-500">/{hardTotal}</span>
+              <div className="text-xs font-mono text-slate-200">
+                {hardSolved} <span className="text-slate-400">/{hardTotal}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Badges Card (Matches Reference Image 2) */}
-        <div className="p-6 rounded-2xl bg-[#0c121e] border border-slate-800 flex flex-col justify-between">
+        <div
+          className="p-6 rounded-2xl border flex flex-col justify-between transition-all duration-200"
+          style={{
+            background: "rgba(14,14,22,0.92)",
+            borderColor: "rgba(255,255,255,0.12)",
+            backdropFilter: "blur(16px)",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.borderColor = "rgba(239,68,68,0.45)";
+            e.currentTarget.style.boxShadow = "0 0 24px rgba(239,68,68,0.22), 0 8px 30px rgba(0,0,0,0.6)";
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+            e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.4)";
+            e.currentTarget.style.transform = "translateY(0px)";
+          }}
+        >
           <div className="flex items-start justify-between">
             <div>
-              <span className="text-xs text-slate-400 block font-medium">Badges</span>
+              <span className="text-xs text-slate-300 block font-semibold">Badges</span>
               <div className="text-3xl font-extrabold text-white mt-1">{badgesEarned}</div>
             </div>
 
             {/* Hexagonal Milestone Badge Shield */}
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-700/80 flex flex-col items-center justify-center relative shadow-inner">
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-red-500/30 flex flex-col items-center justify-center relative shadow-inner">
               <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
                 <Award className="w-4 h-4 text-amber-400" />
               </div>
-              <span className="text-[10px] font-mono text-slate-400 mt-1 font-semibold">2026</span>
+              <span className="text-[10px] font-mono text-slate-300 mt-1 font-semibold">2026</span>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-800/80">
-            <span className="text-[11px] text-slate-400 block">Upcoming Badge</span>
+          <div className="pt-4 border-t border-white/10">
+            <span className="text-[11px] text-slate-300 block font-medium">Upcoming Badge</span>
             <div className="flex items-center justify-between mt-1">
               <span className="text-xs font-bold text-slate-200">{upcomingBadgeName}</span>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-full border border-emerald-500/30 font-semibold">
                 {upcomingBadgeProgress}
               </span>
             </div>
@@ -219,7 +255,15 @@ export function AnalyticsCard({
       </div>
 
       {/* Calendar Heatmap: Submissions in the last year (Matches Reference Image 2) */}
-      <div className="p-6 rounded-2xl bg-[#0c121e] border border-slate-800 space-y-4">
+      <div
+        className="p-6 rounded-2xl border space-y-4 transition-all duration-200"
+        style={{
+          background: "rgba(14,14,22,0.92)",
+          borderColor: "rgba(255,255,255,0.12)",
+          backdropFilter: "blur(16px)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+        }}
+      >
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold text-white">
             {totalYearSubmissions} submissions in the last year

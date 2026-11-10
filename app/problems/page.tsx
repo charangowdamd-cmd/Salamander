@@ -116,29 +116,34 @@ export default function ProblemsPage() {
               <button
                 key={label}
                 onClick={() => setSelectedDifficulty(label)}
-                className="p-5 rounded-2xl text-left transition"
+                className="p-5 rounded-2xl text-left transition-all duration-200"
                 style={{
-                  background: isActive ? bg : "rgba(255,255,255,0.03)",
-                  border: `1px solid ${isActive ? `color-mix(in srgb, ${color} 35%, transparent)` : "rgba(255,255,255,0.08)"}`,
-                  backdropFilter: "blur(12px)",
+                  background: isActive ? `color-mix(in srgb, ${color} 18%, rgba(14,14,22,0.92))` : "rgba(14,14,22,0.9)",
+                  border: `1px solid ${isActive ? `color-mix(in srgb, ${color} 50%, transparent)` : "rgba(255,255,255,0.12)"}`,
+                  boxShadow: isActive ? `0 0 20px color-mix(in srgb, ${color} 25%, transparent)` : "0 4px 20px rgba(0,0,0,0.4)",
+                  backdropFilter: "blur(16px)",
                 }}
                 onMouseOver={(e) => {
-                  if (!isActive) e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
+                  e.currentTarget.style.borderColor = `color-mix(in srgb, ${color} 60%, transparent)`;
+                  e.currentTarget.style.boxShadow = `0 0 24px color-mix(in srgb, ${color} 28%, transparent), 0 8px 30px rgba(0,0,0,0.5)`;
+                  e.currentTarget.style.transform = "translateY(-2px)";
                 }}
                 onMouseOut={(e) => {
-                  if (!isActive) e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                  e.currentTarget.style.borderColor = isActive ? `color-mix(in srgb, ${color} 50%, transparent)` : "rgba(255,255,255,0.12)";
+                  e.currentTarget.style.boxShadow = isActive ? `0 0 20px color-mix(in srgb, ${color} 25%, transparent)` : "0 4px 20px rgba(0,0,0,0.4)";
+                  e.currentTarget.style.transform = "translateY(0px)";
                 }}
               >
                 <span
-                  className="text-xs font-semibold block"
-                  style={{ color: isActive ? color : "var(--text-muted)" }}
+                  className="text-xs font-bold block"
+                  style={{ color: isActive ? color : "var(--text-secondary)" }}
                 >
                   {label === "All" ? "All problems" : label}
                 </span>
                 <div className="text-3xl font-black mt-1" style={{ color: "var(--text-primary)" }}>
                   {count}
                 </div>
-                <span className="text-[11px] mt-0.5 block" style={{ color: "var(--text-muted)" }}>
+                <span className="text-[11px] mt-0.5 block font-medium" style={{ color: "var(--text-secondary)" }}>
                   {solved} solved
                 </span>
               </button>
@@ -150,9 +155,10 @@ export default function ProblemsPage() {
         <div
           className="rounded-2xl p-4 space-y-3"
           style={{
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            backdropFilter: "blur(12px)",
+            background: "rgba(14,14,22,0.92)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            backdropFilter: "blur(20px)",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
           }}
         >
           <div className="flex flex-col md:flex-row gap-3 items-start md:items-center justify-between">
@@ -160,7 +166,7 @@ export default function ProblemsPage() {
             <div className="relative w-full md:w-80">
               <Search
                 className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2"
-                style={{ color: "var(--text-muted)" }}
+                style={{ color: "var(--text-secondary)" }}
               />
               <input
                 type="text"
@@ -169,12 +175,12 @@ export default function ProblemsPage() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 rounded-xl text-xs outline-none transition"
                 style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.12)",
                   color: "var(--text-primary)",
                 }}
                 onFocus={(e) => (e.currentTarget.style.borderColor = "rgba(239,68,68,0.5)")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
               />
             </div>
 
@@ -184,18 +190,18 @@ export default function ProblemsPage() {
                 <button
                   key={st}
                   onClick={() => setSelectedStatus(st)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-semibold transition"
+                  className="px-3 py-1.5 rounded-lg text-xs font-bold transition"
                   style={
                     selectedStatus === st
                       ? {
-                          background: "rgba(255,255,255,0.1)",
-                          color: "var(--text-primary)",
-                          border: "1px solid rgba(255,255,255,0.15)",
+                          background: "rgba(239,68,68,0.15)",
+                          color: "#ef4444",
+                          border: "1px solid rgba(239,68,68,0.3)",
                         }
-                      : { color: "var(--text-muted)", border: "1px solid transparent" }
+                      : { color: "var(--text-secondary)", border: "1px solid transparent" }
                   }
                   onMouseOver={(e) => { if (selectedStatus !== st) e.currentTarget.style.color = "var(--text-primary)"; }}
-                  onMouseOut={(e) => { if (selectedStatus !== st) e.currentTarget.style.color = "var(--text-muted)"; }}
+                  onMouseOut={(e) => { if (selectedStatus !== st) e.currentTarget.style.color = "var(--text-secondary)"; }}
                 >
                   {st}
                 </button>
@@ -206,7 +212,7 @@ export default function ProblemsPage() {
           {/* Category chips */}
           <div
             className="flex flex-wrap gap-1.5 pt-3 border-t"
-            style={{ borderColor: "rgba(255,255,255,0.07)" }}
+            style={{ borderColor: "rgba(255,255,255,0.08)" }}
           >
             {categories.map((cat) => {
               const isActive = selectedCategory === cat;
@@ -214,22 +220,22 @@ export default function ProblemsPage() {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className="px-2.5 py-1 rounded-lg text-[11px] font-medium transition"
+                  className="px-2.5 py-1 rounded-lg text-[11px] font-semibold transition"
                   style={
                     isActive
                       ? {
-                          background: "rgba(239,68,68,0.12)",
+                          background: "rgba(239,68,68,0.18)",
                           color: "#ef4444",
-                          border: "1px solid rgba(239,68,68,0.25)",
+                          border: "1px solid rgba(239,68,68,0.35)",
                         }
                       : {
-                          background: "rgba(255,255,255,0.04)",
-                          color: "var(--text-muted)",
-                          border: "1px solid rgba(255,255,255,0.07)",
+                          background: "rgba(255,255,255,0.06)",
+                          color: "var(--text-secondary)",
+                          border: "1px solid rgba(255,255,255,0.1)",
                         }
                   }
                   onMouseOver={(e) => { if (!isActive) e.currentTarget.style.color = "var(--text-primary)"; }}
-                  onMouseOut={(e) => { if (!isActive) e.currentTarget.style.color = "var(--text-muted)"; }}
+                  onMouseOut={(e) => { if (!isActive) e.currentTarget.style.color = "var(--text-secondary)"; }}
                 >
                   {cat}
                 </button>
@@ -242,20 +248,21 @@ export default function ProblemsPage() {
         <div
           className="rounded-2xl overflow-hidden"
           style={{
-            background: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            backdropFilter: "blur(12px)",
+            background: "rgba(14,14,22,0.94)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            backdropFilter: "blur(20px)",
+            boxShadow: "0 6px 24px rgba(0,0,0,0.45)",
           }}
         >
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr
-                  className="text-[11px] font-medium border-b"
+                  className="text-[11px] font-bold border-b uppercase tracking-wider"
                   style={{
-                    background: "rgba(255,255,255,0.03)",
-                    borderColor: "rgba(255,255,255,0.07)",
-                    color: "var(--text-muted)",
+                    background: "rgba(0,0,0,0.35)",
+                    borderColor: "rgba(255,255,255,0.08)",
+                    color: "var(--text-secondary)",
                   }}
                 >
                   <th className="py-3 px-4 w-10 text-center">
@@ -272,7 +279,7 @@ export default function ProblemsPage() {
               <tbody>
                 {filteredProblems.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-16 text-center text-sm" style={{ color: "var(--text-muted)" }}>
+                    <td colSpan={7} className="py-16 text-center text-sm font-medium" style={{ color: "var(--text-secondary)" }}>
                       No problems match your filters.
                     </td>
                   </tr>
@@ -287,18 +294,18 @@ export default function ProblemsPage() {
                         : "#ef4444";
                     const diffBg =
                       p.difficulty === "Easy"
-                        ? "rgba(34,197,94,0.1)"
+                        ? "rgba(34,197,94,0.15)"
                         : p.difficulty === "Medium"
-                        ? "rgba(245,158,11,0.1)"
-                        : "rgba(239,68,68,0.1)";
+                        ? "rgba(245,158,11,0.15)"
+                        : "rgba(239,68,68,0.15)";
 
                     return (
                       <tr
                         key={p.id}
-                        className="border-b group transition"
-                        style={{ borderColor: "rgba(255,255,255,0.05)" }}
+                        className="border-b group transition-all duration-150"
+                        style={{ borderColor: "rgba(255,255,255,0.06)" }}
                         onMouseOver={(e) =>
-                          (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.03)")
+                          (e.currentTarget.style.backgroundColor = "rgba(239,68,68,0.06)")
                         }
                         onMouseOut={(e) =>
                           (e.currentTarget.style.backgroundColor = "transparent")
@@ -311,7 +318,7 @@ export default function ProblemsPage() {
                           ) : (
                             <div
                               className="w-3.5 h-3.5 rounded-full border mx-auto"
-                              style={{ borderColor: "rgba(255,255,255,0.15)" }}
+                              style={{ borderColor: "rgba(255,255,255,0.2)" }}
                             />
                           )}
                         </td>
@@ -320,12 +327,12 @@ export default function ProblemsPage() {
                         <td className="py-4 px-4">
                           <Link
                             href={`/problems/${p.slug}`}
-                            className="text-sm font-medium transition"
-                            style={{ color: "var(--text-secondary)" }}
+                            className="text-sm font-semibold transition flex items-center"
+                            style={{ color: "var(--text-primary)" }}
                             onMouseOver={(e) => (e.currentTarget.style.color = "#ef4444")}
-                            onMouseOut={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                            onMouseOut={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
                           >
-                            <span className="font-mono text-[11px] mr-2" style={{ color: "var(--text-muted)" }}>
+                            <span className="font-mono text-[11px] mr-2 font-normal" style={{ color: "var(--text-secondary)" }}>
                               {String(idx + 1).padStart(2, "0")}.
                             </span>
                             {p.title}
