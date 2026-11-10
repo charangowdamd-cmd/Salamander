@@ -10,16 +10,119 @@ import { useUserStore } from "@/lib/store";
 import { useAuth } from "@/components/AuthProvider";
 import {
   ArrowRight,
-  Sparkles,
-  Code2,
-  Cpu,
-  Building2,
-  ChevronRight,
-  ExternalLink,
+  Zap,
+  Brain,
+  Trophy,
+  BarChart3,
   CheckCircle2,
+  ExternalLink,
+  Play,
+  Terminal,
+  ChevronRight,
+  Newspaper,
 } from "lucide-react";
 
 const Silk = dynamic(() => import("@/components/Silk"), { ssr: false });
+
+// Minimal code illustration for hero right panel
+function CodeIllustration() {
+  return (
+    <div
+      className="relative w-full h-full flex items-center justify-center select-none"
+      aria-hidden="true"
+    >
+      {/* Editor window */}
+      <div
+        className="w-full max-w-sm rounded-xl overflow-hidden shadow-2xl"
+        style={{
+          background: "rgba(15,15,22,0.9)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          backdropFilter: "blur(16px)",
+        }}
+      >
+        {/* Title bar */}
+        <div
+          className="flex items-center justify-between px-4 py-2.5 border-b"
+          style={{ borderColor: "rgba(255,255,255,0.08)" }}
+        >
+          <div className="flex gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500 opacity-80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 opacity-80" />
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500 opacity-80" />
+          </div>
+          <span className="text-[11px] font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>
+            Python
+          </span>
+        </div>
+
+        {/* Code lines */}
+        <div className="p-4 font-mono text-xs space-y-1" style={{ color: "rgba(255,255,255,0.7)" }}>
+          <div>
+            <span style={{ color: "#60a5fa" }}>def</span>
+            <span style={{ color: "#f4f4f8" }}> </span>
+            <span style={{ color: "#34d399" }}>solve</span>
+            <span style={{ color: "#f4f4f8" }}>(nums, target):</span>
+          </div>
+          <div className="pl-4">
+            <span style={{ color: "#60a5fa" }}>seen</span>
+            <span style={{ color: "#f4f4f8" }}> = {}</span>
+          </div>
+          <div className="pl-4">
+            <span style={{ color: "#60a5fa" }}>for</span>
+            <span style={{ color: "#f4f4f8" }}> i, n </span>
+            <span style={{ color: "#60a5fa" }}>in</span>
+            <span style={{ color: "#f4f4f8" }}> enumerate(nums):</span>
+          </div>
+          <div className="pl-8">
+            <span style={{ color: "#60a5fa" }}>if</span>
+            <span style={{ color: "#f4f4f8" }}> target - n </span>
+            <span style={{ color: "#60a5fa" }}>in</span>
+            <span style={{ color: "#f4f4f8" }}> seen:</span>
+          </div>
+          <div className="pl-12">
+            <span style={{ color: "#60a5fa" }}>return</span>
+            <span style={{ color: "#f4f4f8" }}> [seen[target-n], i]</span>
+          </div>
+          <div className="pl-8">
+            <span style={{ color: "#f4f4f8" }}>seen[n] = i</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Verified badge */}
+      <div
+        className="absolute -bottom-2 -right-2 sm:bottom-4 sm:right-0 flex items-center gap-2 px-3 py-2 rounded-xl shadow-xl"
+        style={{
+          background: "rgba(34,197,94,0.15)",
+          border: "1px solid rgba(34,197,94,0.3)",
+          backdropFilter: "blur(12px)",
+        }}
+      >
+        <CheckCircle2 className="w-4 h-4" style={{ color: "#22c55e" }} />
+        <div>
+          <div className="text-[11px] font-bold" style={{ color: "#22c55e" }}>
+            Execution Verified
+          </div>
+          <div className="text-[10px]" style={{ color: "rgba(34,197,94,0.7)" }}>
+            All tests passed
+          </div>
+        </div>
+      </div>
+
+      {/* Floating icon */}
+      <div
+        className="absolute top-0 -right-4 sm:top-2 sm:-right-6 p-3 rounded-xl"
+        style={{
+          background: "rgba(239,68,68,0.1)",
+          border: "1px solid rgba(239,68,68,0.2)",
+          backdropFilter: "blur(12px)",
+        }}
+      >
+        <Terminal className="w-5 h-5" style={{ color: "#ef4444" }} />
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const { state } = useUserStore();
@@ -33,15 +136,47 @@ export default function Home() {
 
   const showcasedProblems =
     homeFilter === "All"
-      ? PROBLEMS.slice(0, 6)
-      : PROBLEMS.filter((p) => p.difficulty === homeFilter).slice(0, 6);
+      ? PROBLEMS.slice(0, 3)
+      : PROBLEMS.filter((p) => p.difficulty === homeFilter).slice(0, 3);
+
+  const featureItems = [
+    {
+      icon: Zap,
+      title: "Real-time Code Execution",
+      desc: "Run and evaluate instantly",
+      color: "#ef4444",
+    },
+    {
+      icon: Brain,
+      title: "AI-Powered Mentorship",
+      desc: "Get intelligent hints",
+      color: "#a855f7",
+    },
+    {
+      icon: Trophy,
+      title: "Interview Preparation",
+      desc: "Practice company questions",
+      color: "#f59e0b",
+    },
+    {
+      icon: BarChart3,
+      title: "Track Your Progress",
+      desc: "Monitor your journey",
+      color: "#22c55e",
+    },
+  ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
-
+    <div
+      className="min-h-screen"
+      style={{
+        background: "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(239,68,68,0.08) 0%, transparent 60%), var(--canvas)",
+      }}
+    >
       {/* ── Hero ── */}
-      <section className="rounded-2xl overflow-hidden relative" style={{ height: "580px" }}>
-        <div style={{ width: "100%", height: "100%", position: "absolute", inset: 0 }}>
+      <section className="relative overflow-hidden" style={{ minHeight: "580px" }}>
+        {/* Silk WebGL background — full bleed */}
+        <div className="absolute inset-0" style={{ zIndex: 0 }}>
           <Silk
             color="#ff2727"
             sheenColor="#ffffff"
@@ -61,356 +196,538 @@ export default function Home() {
           />
         </div>
 
-        <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 sm:p-12"
-          style={{ background: "linear-gradient(to top, rgba(8,12,20,0.97) 0%, rgba(8,12,20,0.75) 50%, transparent 100%)" }}>
-          <div className="max-w-xl space-y-5">
-            <div>
-              <span className="inline-block text-xs font-semibold tracking-wide text-emerald-400 uppercase mb-3">
-                Salamanders — coding practice
-              </span>
-              <h1 className="text-4xl sm:text-5xl font-black text-white leading-tight">
-                Crack interviews with verified execution.
-              </h1>
+        {/* Dark overlay so text is readable */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to right, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.75) 50%, rgba(10,10,15,0.4) 100%)",
+            zIndex: 1,
+          }}
+        />
+
+        {/* Content */}
+        <div
+          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          style={{ zIndex: 2 }}
+        >
+          {/* Left: copy */}
+          <div className="space-y-6 max-w-xl">
+            {/* Eyebrow */}
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-semibold tracking-wider uppercase"
+              style={{
+                background: "rgba(239,68,68,0.1)",
+                border: "1px solid rgba(239,68,68,0.25)",
+                color: "#ef4444",
+              }}
+            >
+              <span
+                className="w-1.5 h-1.5 rounded-full"
+                style={{ backgroundColor: "#ef4444" }}
+              />
+              Salamanders — Coding Practice
             </div>
 
-            <p className="text-sm text-slate-300 leading-relaxed max-w-md">
-              Real subprocess judge for JavaScript and Python. Socratic AI mentorship. Company interview ladders. Proof-of-skill developer profiles.
+            {/* Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight">
+              <span style={{ color: "var(--text-primary)" }}>Crack Interviews with</span>
+              <br />
+              <span
+                style={{
+                  background: "linear-gradient(90deg, #ef4444 0%, #f97316 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                Verified Execution.
+              </span>
+            </h1>
+
+            <p className="text-sm sm:text-base leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+              Master data structures, algorithms, and real-world challenges with verified execution and AI mentorship.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-1">
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-3">
               <Link
                 href={`/problems/${dailyProblem.slug}`}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm text-slate-950 transition"
-                style={{ backgroundColor: "var(--accent)" }}
-                onMouseOver={e => (e.currentTarget.style.backgroundColor = "var(--accent-hover)")}
-                onMouseOut={e => (e.currentTarget.style.backgroundColor = "var(--accent)")}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition"
+                style={{
+                  background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+                  color: "#fff",
+                  boxShadow: "0 0 24px rgba(239,68,68,0.35)",
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.boxShadow = "0 0 36px rgba(239,68,68,0.5)")}
+                onMouseOut={(e) => (e.currentTarget.style.boxShadow = "0 0 24px rgba(239,68,68,0.35)")}
               >
-                Start solving
+                <Play className="w-4 h-4 fill-white" />
+                Start Practicing
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <Link
                 href="/problems"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold border text-slate-200 transition"
-                style={{ borderColor: "var(--border-strong)", backgroundColor: "rgba(14,20,32,0.7)" }}
-                onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-hover)")}
-                onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition"
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  color: "var(--text-primary)",
+                  backdropFilter: "blur(12px)",
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)")}
+                onMouseOut={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
               >
-                Browse 20 problems
+                Explore Problems
               </Link>
 
               {!user && (
                 <button
                   onClick={openAuthModal}
-                  className="text-sm font-medium text-slate-400 hover:text-white transition underline underline-offset-4"
+                  className="text-xs font-medium transition underline underline-offset-4"
+                  style={{ color: "var(--text-muted)" }}
+                  onMouseOver={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
+                  onMouseOut={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
                 >
                   Sign in to sync progress
                 </button>
               )}
             </div>
           </div>
+
+          {/* Right: code illustration */}
+          <div className="hidden lg:flex items-center justify-center relative h-72">
+            <CodeIllustration />
+          </div>
         </div>
       </section>
 
-      {/* ── Platform stats strip ── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {[
-          { label: "Core problems", value: "20", sub: "Easy, Medium, Hard", color: "var(--accent)", Icon: Code2 },
-          { label: "Languages", value: "JS + Py", sub: "Deterministic judge", color: "var(--amber)", Icon: Cpu },
-          { label: "AI mentor", value: "Gemini", sub: "4-tier Socratic hints", color: "var(--cyan)", Icon: Sparkles },
-          { label: "Company tracks", value: "5", sub: "Google, Meta, Amazon…", color: "var(--rose)", Icon: Building2 },
-        ].map(({ label, value, sub, color, Icon }) => (
-          <div
-            key={label}
-            className="flex items-center gap-3.5 p-4 rounded-xl border"
-            style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
-          >
-            <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
-              style={{ backgroundColor: `color-mix(in srgb, ${color} 10%, transparent)`, border: `1px solid color-mix(in srgb, ${color} 25%, transparent)` }}
-            >
-              <Icon className="w-4 h-4" style={{ color }} />
-            </div>
-            <div>
-              <div className="text-sm font-bold" style={{ color: "var(--text-primary)" }}>{value}</div>
-              <div className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{sub}</div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 space-y-16">
 
-      {/* ── Problem showcase ── */}
-      <section className="space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
-              Practice question bank
-            </h2>
-            <p className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
-              Interview-tested algorithms with real-time test evaluation
-            </p>
-          </div>
-
-          <div
-            className="flex items-center gap-1 p-1 rounded-lg border self-start sm:self-auto"
-            style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
-          >
-            {(["All", "Easy", "Medium", "Hard"] as const).map((lvl) => {
-              const count = lvl === "All" ? 20 : lvl === "Easy" ? easyCount : lvl === "Medium" ? medCount : hardCount;
-              const isActive = homeFilter === lvl;
-              return (
-                <button
-                  key={lvl}
-                  onClick={() => setHomeFilter(lvl)}
-                  className="px-3 py-1 rounded-md text-xs font-semibold transition"
-                  style={
-                    isActive
-                      ? { backgroundColor: "var(--accent)", color: "var(--accent-text)" }
-                      : { color: "var(--text-muted)" }
-                  }
-                  onMouseOver={e => { if (!isActive) e.currentTarget.style.color = "var(--text-primary)"; }}
-                  onMouseOut={e => { if (!isActive) e.currentTarget.style.color = "var(--text-muted)"; }}
+        {/* ── Feature strip ── */}
+        <div
+          className="rounded-2xl overflow-hidden"
+          style={{
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid rgba(255,255,255,0.07)",
+          }}
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0"
+            style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+            {featureItems.map(({ icon: Icon, title, desc, color }) => (
+              <div
+                key={title}
+                className="flex items-center gap-3 px-5 py-4"
+                style={{ borderColor: "rgba(255,255,255,0.07)" }}
+              >
+                <div
+                  className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                  style={{
+                    background: `color-mix(in srgb, ${color} 12%, transparent)`,
+                    border: `1px solid color-mix(in srgb, ${color} 25%, transparent)`,
+                  }}
                 >
-                  {lvl} ({count})
-                </button>
+                  <Icon className="w-4 h-4" style={{ color }} />
+                </div>
+                <div>
+                  <div className="text-xs font-semibold" style={{ color: "var(--text-primary)" }}>
+                    {title}
+                  </div>
+                  <div className="text-[11px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                    {desc}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Practice Question Bank ── */}
+        <section className="space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>
+                Practice Question Bank
+              </h2>
+              <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+                Sharpen your problem-solving skills with interview-tested challenges.
+              </p>
+            </div>
+
+            {/* Difficulty filter */}
+            <div className="flex items-center gap-1 self-start sm:self-auto">
+              {(["All", "Easy", "Medium", "Hard"] as const).map((lvl) => {
+                const count =
+                  lvl === "All" ? 20 : lvl === "Easy" ? easyCount : lvl === "Medium" ? medCount : hardCount;
+                const isActive = homeFilter === lvl;
+                const activeColor =
+                  lvl === "Easy" ? "#22c55e" : lvl === "Medium" ? "#f59e0b" : lvl === "Hard" ? "#ef4444" : "#ef4444";
+                return (
+                  <button
+                    key={lvl}
+                    onClick={() => setHomeFilter(lvl)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold transition"
+                    style={
+                      isActive
+                        ? {
+                            background: lvl === "All" ? "linear-gradient(135deg, #ef4444, #dc2626)" : `color-mix(in srgb, ${activeColor} 15%, transparent)`,
+                            color: lvl === "All" ? "#fff" : activeColor,
+                            border: `1px solid color-mix(in srgb, ${activeColor} 30%, transparent)`,
+                            boxShadow: lvl === "All" ? "0 0 12px rgba(239,68,68,0.3)" : "none",
+                          }
+                        : {
+                            background: "rgba(255,255,255,0.04)",
+                            color: "var(--text-muted)",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                          }
+                    }
+                    onMouseOver={(e) => {
+                      if (!isActive) e.currentTarget.style.color = "var(--text-primary)";
+                    }}
+                    onMouseOut={(e) => {
+                      if (!isActive) e.currentTarget.style.color = "var(--text-muted)";
+                    }}
+                  >
+                    {lvl === "All" ? "All Problems" : lvl}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Problem cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {showcasedProblems.map((prob) => {
+              const isSolved = state.solvedProblems.includes(prob.slug);
+              const diffColor =
+                prob.difficulty === "Easy"
+                  ? "#22c55e"
+                  : prob.difficulty === "Medium"
+                  ? "#f59e0b"
+                  : "#ef4444";
+              const diffBg =
+                prob.difficulty === "Easy"
+                  ? "rgba(34,197,94,0.1)"
+                  : prob.difficulty === "Medium"
+                  ? "rgba(245,158,11,0.1)"
+                  : "rgba(239,68,68,0.1)";
+
+              // Icon per difficulty for card decoration
+              const DiffIcon = prob.difficulty === "Hard" ? Terminal : prob.difficulty === "Medium" ? Brain : Zap;
+
+              return (
+                <Link
+                  key={prob.id}
+                  href={`/problems/${prob.slug}`}
+                  className="group block rounded-2xl overflow-hidden transition"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    backdropFilter: "blur(12px)",
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                  }}
+                >
+                  <div className="p-5">
+                    {/* Top row: difficulty + solved + icon */}
+                    <div className="flex items-start justify-between mb-4">
+                      <span
+                        className="text-[11px] font-bold px-2 py-0.5 rounded-md"
+                        style={{ color: diffColor, backgroundColor: diffBg }}
+                      >
+                        {prob.difficulty}
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {isSolved && (
+                          <CheckCircle2 className="w-4 h-4" style={{ color: "#22c55e" }} />
+                        )}
+                        <div
+                          className="w-8 h-8 rounded-lg flex items-center justify-center opacity-20 group-hover:opacity-40 transition"
+                          style={{ color: diffColor }}
+                        >
+                          <DiffIcon className="w-5 h-5" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Title + desc */}
+                    <h3
+                      className="font-bold text-base mb-1.5 group-hover:text-red-400 transition"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {prob.title}
+                    </h3>
+                    <p
+                      className="text-xs line-clamp-2 leading-relaxed mb-5"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {prob.description.replace(/[`*]/g, "")}
+                    </p>
+
+                    {/* Tags + acceptance */}
+                    <div className="flex items-center gap-2 mb-3">
+                      {prob.tags.slice(0, 2).map((t) => (
+                        <span
+                          key={t}
+                          className="text-[10px] px-2 py-0.5 rounded-md font-medium"
+                          style={{
+                            color: "var(--text-secondary)",
+                            background: "rgba(255,255,255,0.06)",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Acceptance bar */}
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="flex-1 h-1 rounded-full overflow-hidden"
+                        style={{ background: "rgba(255,255,255,0.08)" }}
+                      >
+                        <div
+                          className="h-full rounded-full"
+                          style={{
+                            width: `${prob.acceptanceRate}%`,
+                            background: `linear-gradient(90deg, ${diffColor}, ${diffColor}99)`,
+                          }}
+                        />
+                      </div>
+                      <span className="text-[11px] font-mono whitespace-nowrap" style={{ color: "var(--text-muted)" }}>
+                        {prob.acceptanceRate}% Acceptance
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Bottom action bar */}
+                  <div
+                    className="px-5 py-2.5 flex items-center justify-end border-t"
+                    style={{ borderColor: "rgba(255,255,255,0.06)" }}
+                  >
+                    <span
+                      className="flex items-center gap-1 text-[11px] font-semibold transition"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      Solve
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </Link>
               );
             })}
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {showcasedProblems.map((prob) => {
-            const isSolved = state.solvedProblems.includes(prob.slug);
-            const diffColor =
-              prob.difficulty === "Easy" ? "var(--accent)" :
-              prob.difficulty === "Medium" ? "var(--amber)" : "var(--rose)";
-            return (
-              <Link
-                key={prob.id}
-                href={`/problems/${prob.slug}`}
-                className="group block p-5 rounded-xl border transition"
-                style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
-                onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
-                onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border)")}
-              >
-                <div className="flex items-start justify-between gap-2 mb-3">
-                  <span
-                    className="text-[11px] font-semibold px-2 py-0.5 rounded"
-                    style={{
-                      color: diffColor,
-                      backgroundColor: `color-mix(in srgb, ${diffColor} 10%, transparent)`,
-                    }}
-                  >
-                    {prob.difficulty}
-                  </span>
-                  {isSolved && (
-                    <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: "var(--accent)" }} />
-                  )}
-                </div>
-
-                <h3
-                  className="font-semibold text-sm mb-1.5 group-hover:text-emerald-400 transition"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  {prob.title}
-                </h3>
-                <p className="text-xs line-clamp-2 leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>
-                  {prob.description.replace(/[`*]/g, "")}
-                </p>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-1">
-                    {prob.tags.slice(0, 2).map((t) => (
-                      <span
-                        key={t}
-                        className="text-[10px] px-1.5 py-0.5 rounded"
-                        style={{ color: "var(--text-muted)", backgroundColor: "var(--surface-2)", border: "1px solid var(--border)" }}
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="text-[11px] font-mono" style={{ color: "var(--text-muted)" }}>
-                    {prob.acceptanceRate}%
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className="text-center">
-          <Link
-            href="/problems"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold border transition"
-            style={{ color: "var(--text-secondary)", borderColor: "var(--border)", backgroundColor: "var(--surface)" }}
-            onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
-            onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border)")}
-          >
-            View all 20 problems
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-      </section>
-
-      {/* ── Company interview tracks ── */}
-      <section className="space-y-5">
-        <div className="flex items-end justify-between">
-          <div>
-            <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
-              Company interview tracks
-            </h2>
-            <p className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
-              High-frequency questions from top tech hiring pipelines
-            </p>
+          <div className="text-center pt-2">
+            <Link
+              href="/problems"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition"
+              style={{
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                color: "var(--text-secondary)",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.18)";
+                e.currentTarget.style.color = "var(--text-primary)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                e.currentTarget.style.color = "var(--text-secondary)";
+              }}
+            >
+              View all 20 problems
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
-          <Link
-            href="/interview-prep"
-            className="text-xs font-medium flex items-center gap-1 transition"
-            style={{ color: "var(--accent)" }}
-            onMouseOver={e => (e.currentTarget.style.color = "var(--accent-hover)")}
-            onMouseOut={e => (e.currentTarget.style.color = "var(--accent)")}
-          >
-            All tracks <ArrowRight className="w-3 h-3" />
-          </Link>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-          {COMPANY_TRACKS.map((comp) => {
-            const solved = comp.slugs.filter((s) => state.solvedProblems.includes(s)).length;
-            const pct = Math.round((solved / comp.slugs.length) * 100);
-            return (
-              <Link
-                key={comp.id}
-                href="/interview-prep"
-                className="group flex flex-col justify-between p-4 rounded-xl border transition"
-                style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
-                onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
-                onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border)")}
-              >
-                <div className="flex items-center justify-between mb-3">
+        {/* ── Company interview tracks ── */}
+        <section className="space-y-6">
+          <div className="flex items-end justify-between">
+            <div>
+              <h2 className="text-2xl font-bold" style={{ color: "var(--text-primary)" }}>
+                Company interview tracks
+              </h2>
+              <p className="text-sm mt-1" style={{ color: "var(--text-secondary)" }}>
+                High-frequency questions from top tech hiring pipelines
+              </p>
+            </div>
+            <Link
+              href="/interview-prep"
+              className="text-xs font-medium flex items-center gap-1 transition"
+              style={{ color: "#ef4444" }}
+              onMouseOver={(e) => (e.currentTarget.style.color = "#dc2626")}
+              onMouseOut={(e) => (e.currentTarget.style.color = "#ef4444")}
+            >
+              All tracks <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {COMPANY_TRACKS.map((comp) => {
+              const solved = comp.slugs.filter((s) => state.solvedProblems.includes(s)).length;
+              const pct = Math.round((solved / comp.slugs.length) * 100);
+              return (
+                <Link
+                  key={comp.id}
+                  href="/interview-prep"
+                  className="group flex flex-col p-4 rounded-2xl transition"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    backdropFilter: "blur(10px)",
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(239,68,68,0.25)";
+                    e.currentTarget.style.background = "rgba(239,68,68,0.04)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                    e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                  }}
+                >
+                  {/* Avatar */}
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black mb-3"
                     style={{
-                      backgroundColor: "var(--surface-2)",
-                      border: "1px solid var(--border)",
-                      color: "var(--accent)",
+                      background: "linear-gradient(135deg, rgba(239,68,68,0.15), rgba(239,68,68,0.05))",
+                      border: "1px solid rgba(239,68,68,0.2)",
+                      color: "#ef4444",
                     }}
                   >
                     {comp.name.substring(0, 2).toUpperCase()}
                   </div>
-                  <span className="text-[10px] font-medium" style={{ color: "var(--text-muted)" }}>
-                    {comp.frequency}
-                  </span>
-                </div>
 
-                <div>
                   <h4 className="text-xs font-bold mb-0.5" style={{ color: "var(--text-primary)" }}>
                     {comp.name}
                   </h4>
-                  <p className="text-[11px] mb-3" style={{ color: "var(--text-muted)" }}>
-                    {comp.slugs.length} problems
+                  <p className="text-[10px] mb-3" style={{ color: "var(--text-muted)" }}>
+                    {comp.slugs.length} problems · {comp.frequency}
                   </p>
 
+                  {/* Progress */}
                   <div
                     className="w-full h-1 rounded-full overflow-hidden"
-                    style={{ backgroundColor: "var(--border)" }}
+                    style={{ background: "rgba(255,255,255,0.08)" }}
                   >
                     <div
-                      className="h-full rounded-full"
-                      style={{ width: `${pct}%`, backgroundColor: "var(--accent)" }}
+                      className="h-full rounded-full transition"
+                      style={{
+                        width: `${pct}%`,
+                        background: "linear-gradient(90deg, #ef4444, #f97316)",
+                      }}
                     />
                   </div>
-                  <div className="text-[10px] mt-1" style={{ color: "var(--text-muted)" }}>
+                  <div className="text-[10px] mt-1.5" style={{ color: "var(--text-muted)" }}>
                     {solved}/{comp.slugs.length} solved
                   </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── Latest tech updates ── */}
-      <section
-        className="rounded-xl border p-6 space-y-5"
-        style={{ backgroundColor: "var(--surface)", borderColor: "var(--border)" }}
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-base font-bold" style={{ color: "var(--text-primary)" }}>
-              Engineering and AI updates
-            </h2>
-            <p className="text-xs mt-0.5" style={{ color: "var(--text-secondary)" }}>
-              Curated for software engineers
-            </p>
+                </Link>
+              );
+            })}
           </div>
-          <Link
-            href="/news"
-            className="text-xs font-medium flex items-center gap-1 transition"
-            style={{ color: "var(--cyan)" }}
-            onMouseOver={e => (e.currentTarget.style.opacity = "0.75")}
-            onMouseOut={e => (e.currentTarget.style.opacity = "1")}
-          >
-            All updates <ArrowRight className="w-3 h-3" />
-          </Link>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {NEWS_ITEMS.slice(0, 2).map((item) => (
-            <div
-              key={item.id}
-              className="p-4 rounded-lg border flex flex-col justify-between gap-3"
-              style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[11px] font-semibold" style={{ color: "var(--accent)" }}>
-                    {item.category}
-                  </span>
-                  <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
-                    {item.source}
-                  </span>
-                </div>
-                <h4 className="text-xs font-semibold mb-1.5 leading-snug" style={{ color: "var(--text-primary)" }}>
-                  {item.title}
-                </h4>
-                <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                  {item.whyItMatters}
-                </p>
-              </div>
-
-              <div
-                className="flex items-center justify-between pt-3 border-t"
-                style={{ borderColor: "var(--border)" }}
-              >
-                <div className="flex gap-1">
-                  {item.tags.slice(0, 2).map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] px-1.5 py-0.5 rounded"
-                      style={{ color: "var(--text-muted)", backgroundColor: "var(--surface)", border: "1px solid var(--border)" }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1 text-[11px] font-medium transition"
-                  style={{ color: "var(--cyan)" }}
-                  onMouseOver={e => (e.currentTarget.style.opacity = "0.75")}
-                  onMouseOut={e => (e.currentTarget.style.opacity = "1")}
-                >
-                  Source <ExternalLink className="w-3 h-3" />
-                </a>
-              </div>
+        {/* ── Latest tech updates ── */}
+        <section className="space-y-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold" style={{ color: "var(--text-primary)" }}>
+                Engineering and AI updates
+              </h2>
+              <p className="text-xs mt-1" style={{ color: "var(--text-secondary)" }}>
+                Curated updates for software engineers
+              </p>
             </div>
-          ))}
-        </div>
-      </section>
+            <Link
+              href="/news"
+              className="text-xs font-medium flex items-center gap-1 transition"
+              style={{ color: "var(--cyan)" }}
+              onMouseOver={(e) => (e.currentTarget.style.opacity = "0.75")}
+              onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              All updates <ArrowRight className="w-3 h-3" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {NEWS_ITEMS.slice(0, 2).map((item) => (
+              <div
+                key={item.id}
+                className="p-5 rounded-2xl flex flex-col justify-between gap-4 transition"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span
+                      className="text-[11px] font-semibold px-2 py-0.5 rounded-md"
+                      style={{
+                        color: "#22c55e",
+                        background: "rgba(34,197,94,0.1)",
+                        border: "1px solid rgba(34,197,94,0.2)",
+                      }}
+                    >
+                      {item.category}
+                    </span>
+                    <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+                      {item.source}
+                    </span>
+                  </div>
+                  <h4 className="text-sm font-semibold mb-2 leading-snug" style={{ color: "var(--text-primary)" }}>
+                    {item.title}
+                  </h4>
+                  <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                    {item.whyItMatters}
+                  </p>
+                </div>
+
+                <div
+                  className="flex items-center justify-between pt-3 border-t"
+                  style={{ borderColor: "rgba(255,255,255,0.07)" }}
+                >
+                  <div className="flex gap-1.5">
+                    {item.tags.slice(0, 2).map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] px-1.5 py-0.5 rounded"
+                        style={{
+                          color: "var(--text-muted)",
+                          background: "rgba(255,255,255,0.05)",
+                          border: "1px solid rgba(255,255,255,0.08)",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-1 text-[11px] font-medium transition"
+                    style={{ color: "var(--cyan)" }}
+                    onMouseOver={(e) => (e.currentTarget.style.opacity = "0.75")}
+                    onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
+                  >
+                    Source <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

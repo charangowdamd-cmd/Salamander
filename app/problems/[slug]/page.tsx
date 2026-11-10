@@ -232,33 +232,33 @@ export default function ProblemArenaPage() {
   const isSolved = state.solvedProblems.includes(problem.slug) || editorialUnlocked;
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col" style={{ backgroundColor: "#07090f" }}>
+    <div className="h-[calc(100vh-4rem)] flex flex-col" style={{ backgroundColor: "#0a0a0f" }}>
       {/* Top Bar Navigation */}
       <div
         className="h-11 px-4 flex items-center justify-between border-b"
-        style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+        style={{ backgroundColor: "rgba(10,10,15,0.95)", borderColor: "rgba(255,255,255,0.08)" }}
       >
         <div className="flex items-center gap-3">
           <Link
             href="/problems"
             className="flex items-center gap-1.5 text-xs font-medium transition"
-            style={{ color: "var(--text-muted)" }}
-            onMouseOver={e => (e.currentTarget.style.color = "var(--text-primary)")}
-            onMouseOut={e => (e.currentTarget.style.color = "var(--text-muted)")}
+            style={{ color: "rgba(255,255,255,0.4)" }}
+            onMouseOver={e => (e.currentTarget.style.color = "rgba(255,255,255,0.9)")}
+            onMouseOut={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Problems
           </Link>
-          <span style={{ color: "var(--border-strong)" }}>·</span>
-          <h2 className="text-xs font-bold flex items-center gap-1.5" style={{ color: "var(--text-primary)" }}>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>·</span>
+          <h2 className="text-xs font-bold flex items-center gap-1.5" style={{ color: "#f4f4f8" }}>
             {problem.title}
-            {isSolved && <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "var(--accent)" }} />}
+            {isSolved && <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#22c55e" }} />}
           </h2>
           <span
             className="text-[10px] font-semibold px-1.5 py-0.5 rounded"
             style={{
-              color: problem.difficulty === "Easy" ? "var(--accent)" : problem.difficulty === "Medium" ? "var(--amber)" : "var(--rose)",
-              backgroundColor: problem.difficulty === "Easy" ? "var(--accent-subtle)" : problem.difficulty === "Medium" ? "var(--amber-subtle)" : "var(--rose-subtle)",
+              color: problem.difficulty === "Easy" ? "#22c55e" : problem.difficulty === "Medium" ? "#f59e0b" : "#ef4444",
+              backgroundColor: problem.difficulty === "Easy" ? "rgba(34,197,94,0.1)" : problem.difficulty === "Medium" ? "rgba(245,158,11,0.1)" : "rgba(239,68,68,0.1)",
             }}
           >
             {problem.difficulty}
@@ -268,14 +268,14 @@ export default function ProblemArenaPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsAiOpen(!isAiOpen)}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold transition"
             style={{
-              backgroundColor: "var(--accent-subtle)",
-              color: "var(--accent)",
-              border: "1px solid rgba(16,185,129,0.25)",
+              backgroundColor: "rgba(168,85,247,0.1)",
+              color: "#a855f7",
+              border: "1px solid rgba(168,85,247,0.25)",
             }}
-            onMouseOver={e => (e.currentTarget.style.backgroundColor = "rgba(16,185,129,0.14)")}
-            onMouseOut={e => (e.currentTarget.style.backgroundColor = "var(--accent-subtle)")}
+            onMouseOver={e => (e.currentTarget.style.backgroundColor = "rgba(168,85,247,0.18)")}
+            onMouseOut={e => (e.currentTarget.style.backgroundColor = "rgba(168,85,247,0.1)")}
           >
             <Sparkles className="w-3.5 h-3.5" />
             AI mentor
@@ -285,10 +285,14 @@ export default function ProblemArenaPage() {
             onClick={handleRun}
             disabled={isRunning || isSubmitting}
             title="Shortcut: Ctrl + Enter"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition disabled:opacity-50"
-            style={{ backgroundColor: "var(--surface-2)", color: "var(--text-secondary)", border: "1px solid var(--border-strong)" }}
-            onMouseOver={e => (e.currentTarget.style.borderColor = "var(--border-hover)")}
-            onMouseOut={e => (e.currentTarget.style.borderColor = "var(--border-strong)")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition disabled:opacity-50"
+            style={{
+              backgroundColor: "rgba(255,255,255,0.07)",
+              color: "rgba(255,255,255,0.75)",
+              border: "1px solid rgba(255,255,255,0.1)",
+            }}
+            onMouseOver={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)")}
+            onMouseOut={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
           >
             <Play className="w-3.5 h-3.5" style={{ fill: "currentcolor" }} />
             {isRunning ? "Running…" : "Run"}
@@ -299,26 +303,30 @@ export default function ProblemArenaPage() {
             onClick={handleSubmit}
             disabled={isRunning || isSubmitting}
             title="Shortcut: Ctrl + Shift + Enter"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition disabled:opacity-50"
-            style={{ backgroundColor: "var(--accent)", color: "var(--accent-text)" }}
-            onMouseOver={e => (e.currentTarget.style.backgroundColor = "var(--accent-hover)")}
-            onMouseOut={e => (e.currentTarget.style.backgroundColor = "var(--accent)")}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition disabled:opacity-50"
+            style={{
+              background: "linear-gradient(135deg, #ef4444, #dc2626)",
+              color: "#fff",
+              boxShadow: "0 0 14px rgba(239,68,68,0.3)",
+            }}
+            onMouseOver={e => (e.currentTarget.style.boxShadow = "0 0 22px rgba(239,68,68,0.45)")}
+            onMouseOut={e => (e.currentTarget.style.boxShadow = "0 0 14px rgba(239,68,68,0.3)")}
           >
             <Send className="w-3.5 h-3.5" />
             {isSubmitting ? "Judging…" : "Submit"}
-            <span className="hidden sm:inline text-[10px] opacity-60 ml-0.5">Ctrl+⇧+↵</span>
+            <span className="hidden sm:inline text-[10px] opacity-70 ml-0.5">Ctrl+⇧+↵</span>
           </button>
         </div>
       </div>
 
       {/* Main Split Body */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x overflow-hidden" style={{ borderColor: "var(--border)" }}>
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x overflow-hidden" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
         {/* Left Pane: Description, Submissions, Editorial */}
-        <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: "var(--canvas)" }}>
+        <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: "#0d0d14" }}>
           {/* Tabs */}
           <div
             className="flex border-b px-4 pt-1"
-            style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+            style={{ backgroundColor: "#0a0a0f", borderColor: "rgba(255,255,255,0.08)" }}
           >
             {[
               { key: "description", label: "Description", icon: FileCode },
@@ -339,8 +347,8 @@ export default function ProblemArenaPage() {
                   className="flex items-center gap-1.5 px-3 py-2.5 text-xs font-semibold border-b-2 transition"
                   style={
                     isActive
-                      ? { borderColor: "var(--accent)", color: "var(--accent)" }
-                      : { borderColor: "transparent", color: "var(--text-muted)" }
+                      ? { borderColor: "#ef4444", color: "#ef4444" }
+                      : { borderColor: "transparent", color: "rgba(255,255,255,0.4)" }
                   }
                   onMouseOver={e => { if (!isActive) e.currentTarget.style.color = "var(--text-primary)"; }}
                   onMouseOut={e => { if (!isActive) e.currentTarget.style.color = "var(--text-muted)"; }}
@@ -500,20 +508,20 @@ export default function ProblemArenaPage() {
         </div>
 
         {/* Right Pane: Code Editor & Console Output */}
-        <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: "#07090f" }}>
+        <div className="flex flex-col h-full overflow-hidden" style={{ backgroundColor: "#080810" }}>
           {/* Editor Header */}
           <div
             className="h-10 border-b px-4 flex items-center justify-between"
-            style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+            style={{ backgroundColor: "#0a0a0f", borderColor: "rgba(255,255,255,0.08)" }}
           >
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value as any)}
-              className="rounded-md text-xs py-1 px-2.5 outline-none transition"
+              className="rounded-lg text-xs py-1 px-2.5 outline-none transition"
               style={{
-                backgroundColor: "var(--surface)",
-                border: "1px solid var(--border-strong)",
-                color: "var(--text-secondary)",
+                backgroundColor: "rgba(255,255,255,0.07)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                color: "rgba(255,255,255,0.75)",
               }}
             >
               <option value="python">Python 3</option>
@@ -522,7 +530,7 @@ export default function ProblemArenaPage() {
               <option value="java">Java 21</option>
             </select>
 
-            <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
+            <span className="text-[11px]" style={{ color: "rgba(255,255,255,0.25)" }}>
               Draft saved locally
             </span>
           </div>
@@ -549,25 +557,25 @@ export default function ProblemArenaPage() {
           {/* Bottom Execution Console */}
           <div
             className="h-56 border-t p-3 flex flex-col justify-between overflow-hidden"
-            style={{ backgroundColor: "var(--canvas)", borderColor: "var(--border)" }}
+            style={{ backgroundColor: "#0a0a0f", borderColor: "rgba(255,255,255,0.08)" }}
           >
-            <div className="flex items-center justify-between pb-2 border-b" style={{ borderColor: "var(--border)" }}>
+            <div className="flex items-center justify-between pb-2 border-b" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
               <div className="flex items-center gap-3 text-xs">
                 <button
                   onClick={() => setConsoleTab("testcase")}
                   className="font-semibold transition"
-                  style={{ color: consoleTab === "testcase" ? "var(--accent)" : "var(--text-muted)" }}
-                  onMouseOver={e => { if (consoleTab !== "testcase") e.currentTarget.style.color = "var(--text-primary)"; }}
-                  onMouseOut={e => { if (consoleTab !== "testcase") e.currentTarget.style.color = "var(--text-muted)"; }}
+                  style={{ color: consoleTab === "testcase" ? "#ef4444" : "rgba(255,255,255,0.35)" }}
+                  onMouseOver={e => { if (consoleTab !== "testcase") e.currentTarget.style.color = "rgba(255,255,255,0.75)"; }}
+                  onMouseOut={e => { if (consoleTab !== "testcase") e.currentTarget.style.color = "rgba(255,255,255,0.35)"; }}
                 >
                   Testcase
                 </button>
                 <button
                   onClick={() => setConsoleTab("output")}
                   className="font-semibold transition"
-                  style={{ color: consoleTab === "output" ? "var(--accent)" : "var(--text-muted)" }}
-                  onMouseOver={e => { if (consoleTab !== "output") e.currentTarget.style.color = "var(--text-primary)"; }}
-                  onMouseOut={e => { if (consoleTab !== "output") e.currentTarget.style.color = "var(--text-muted)"; }}
+                  style={{ color: consoleTab === "output" ? "#ef4444" : "rgba(255,255,255,0.35)" }}
+                  onMouseOver={e => { if (consoleTab !== "output") e.currentTarget.style.color = "rgba(255,255,255,0.75)"; }}
+                  onMouseOut={e => { if (consoleTab !== "output") e.currentTarget.style.color = "rgba(255,255,255,0.35)"; }}
                 >
                   Test result
                 </button>
@@ -577,8 +585,8 @@ export default function ProblemArenaPage() {
                     className="font-semibold px-2 py-0.5 rounded text-[11px]"
                     style={
                       verdict === "Accepted"
-                        ? { backgroundColor: "var(--accent-subtle)", color: "var(--accent)", border: "1px solid rgba(16,185,129,0.25)" }
-                        : { backgroundColor: "var(--rose-subtle)", color: "var(--rose)", border: "1px solid rgba(244,63,94,0.25)" }
+                        ? { backgroundColor: "rgba(34,197,94,0.1)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.25)" }
+                        : { backgroundColor: "rgba(239,68,68,0.1)", color: "#ef4444", border: "1px solid rgba(239,68,68,0.25)" }
                     }
                   >
                     {verdict}
@@ -587,7 +595,7 @@ export default function ProblemArenaPage() {
               </div>
 
               {runtime !== null && (
-                <div className="flex items-center gap-3 text-[11px]" style={{ color: "var(--text-muted)" }}>
+                <div className="flex items-center gap-3 text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
                     {runtime} ms
